@@ -57,6 +57,7 @@
 
     4. 作者搜索实现原理（标题搜索实现原理类似不再赘述）
     __注意：__因为采用的是开哈希，所以作者索引文件会有两个，高精度索引文件hash映射的长度会更长但同时每个hashcode的存储空间会更小，更不容易发生哈希冲突。低精度索引文件则相反。下面有时会出现两个类似的函数，比如setPageContent(int index)和setPageContent2(int index)代表分别对高精度和低精度索引文件操作。
+    
        ①getAuthorPos(String str, int len)函数可以根据指定的作者名和映射长度，利用哈希算法返回指定的hashcode,这个hashcode就是对应文章在srcfile中的位置。此处哈希算法借用了JDK中的哈希算法，具体请自行搜索查看原理。
        
        ②setPageContent(int index)和setPageContent2(int index)设置每页的内容。也就是比如hashcode为1的所有文章在srcfile中的位置称为一页。
