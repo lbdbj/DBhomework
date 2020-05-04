@@ -45,22 +45,26 @@
     1. __说明：__由于xml文件中的信息一致性较差，所以只选用了主标记为article和inproceedings的470多万条文章信息。
 
     2. 解析出的srcfile格式为
-      * !author\r\n
-      * *title\r\n
-      * @journal/booktitle\r\n
-      * #volume\r\n
-      * $year\r\n
-      * %pages\r\n
-      * ^ee\r\n
+      	* !author\r\n
+      	* *title\r\n
+      	* @journal/booktitle\r\n
+      	* #volume\r\n
+      	* $year\r\n
+      	* %pages\r\n
+      	* ^ee\r\n
     
     3. 如果一篇文章没有超过500字节就将它用空格填满500个字节同时存放到srcfile1文件中，如果超过500字节就把它用空格填满成5000个字节同时存到srcfile2文件中。
 
     4. 作者搜索实现原理（标题搜索实现原理类似不再赘述）
     __注意：__因为采用的是开哈希，所以作者索引文件会有两个，高精度索引文件hash映射的长度会更长但同时每个hashcode的存储空间会更小，更不容易发生哈希冲突。低精度索引文件则相反。下面有时会出现两个类似的函数，比如setPageContent(int index)和setPageContent2(int index)代表分别对高精度和低精度索引文件操作。
        ①getAuthorPos(String str, int len)函数可以根据指定的作者名和映射长度，利用哈希算法返回指定的hashcode,这个hashcode就是对应文章在srcfile中的位置。此处哈希算法借用了JDK中的哈希算法，具体请自行搜索查看原理。
+       
        ②setPageContent(int index)和setPageContent2(int index)设置每页的内容。也就是比如hashcode为1的所有文章在srcfile中的位置称为一页。
+       
        ③setFile()和setFile2()，向两个作者索引文件中写入数据。
+       
        ④getArticleByFile(String author, RandomAccessFile rafAuthor1, RandomAccessFile rafSrc1,RandomAccessFile rafAuthor2,RandomAccessFile rafSrc2)函数。通过给定的作者名获取所有的文章信息并返回一个list。里面用到了SrcFileUtil的judgeAuthor函数和formatArticle函数。
+       
        ⑤SrcFileUtil的judgeAuthor函数可以判断指定位置的文章的作者是否包含给定的作者。
        formatArticle函数可以把从srcfile文件中取出的文章信息转换为ArticleInfo对象。
     
