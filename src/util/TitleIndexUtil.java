@@ -62,30 +62,6 @@ public class TitleIndexUtil {
 			return hashcode;
 		}
 		
-		public static int getTitlePos2(String str, int len) {
-			str = str.trim();
-			if(str.length()>0 &&str.charAt(str.length()-1)=='.')
-				str = str.substring(0, str.length()-1);
-			char[]vals = str.toCharArray();
-			int len2 = vals.length;
-			int hashcode = 1;
-			for(int i=0; i<=5; i++) {
-				if(i == len2)
-					break;
-				char c = vals[i];
-				int val;
-				if(c>='a'&& c<='z')
-					val = c-96;
-				else if(c>='A'&& c<='Z') {
-					val = c-64;
-				}else {
-					val = c;
-				}
-				hashcode *= c;
-			}
-
-			return hashcode & len-1;
-		}
 		
 		public static boolean assignValue(String str, int pos) {
 			int index = getTitlePos(str, 8388608);
@@ -102,7 +78,7 @@ public class TitleIndexUtil {
 		}
 		public static boolean assignValue2(String str, int pos) {
 			System.out.println("泄露数据的个数----"+leftCount);
-			int index = getTitlePos2(str, 1000);
+			int index = getTitlePos(str, 1000);
 			System.out.println("位置为"+pos+"的数据哈希值为"+index);
 			for(int i=0; i<6000; i++) {
 					if(AllStatic.titlePos2[index][i] == 0) {
@@ -222,7 +198,7 @@ public class TitleIndexUtil {
 				}
 	}
 	
-	public static List<ArticleInfo> getPosByFile(String title, RandomAccessFile rafTitle1, RandomAccessFile rafSrc1,
+	public static List<ArticleInfo> getArticleByFile(String title, RandomAccessFile rafTitle1, RandomAccessFile rafSrc1,
 			RandomAccessFile rafTitle2,RandomAccessFile rafSrc2) {
 		int pos = getTitlePos(title, 8388608);
 //		查找到的符合要求的文章数量，暂定最大为10

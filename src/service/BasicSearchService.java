@@ -20,7 +20,7 @@ public class BasicSearchService {
 		RandomAccessFile raf2 = new RandomAccessFile(file2, "r");
 		RandomAccessFile raf3 = new RandomAccessFile(file3, "r");
 		RandomAccessFile raf4 = new RandomAccessFile(file4, "r");
-		List<ArticleInfo>articles = AuthorIndexUtil.getPosByFile(author, raf1, raf2,raf3,raf4);
+		List<ArticleInfo>articles = AuthorIndexUtil.getArticleByFile(author, raf1, raf2,raf3,raf4);
 		return articles;
 		
 	}
@@ -33,12 +33,14 @@ public class BasicSearchService {
 		RandomAccessFile raf2 = new RandomAccessFile(file2, "r");
 		RandomAccessFile raf3 = new RandomAccessFile(file3, "r");
 		RandomAccessFile raf4 = new RandomAccessFile(file4, "r");
-		List<ArticleInfo>articles = TitleIndexUtil.getPosByFile(title, raf1, raf2,raf3,raf4);
+		List<ArticleInfo>articles = TitleIndexUtil.getArticleByFile(title, raf1, raf2,raf3,raf4);
 		return articles;
 	}
 	public static void main(String[] args) throws IOException {
 		List<ArticleInfo> list = new BasicSearchService().getAllInfoByAuthor("H. Vincent Poor");
+		int i=0;
 		for(ArticleInfo a : list)
-			System.out.println(a.getTitle());
+			i++;
+		System.out.println(i);
 	}
 }

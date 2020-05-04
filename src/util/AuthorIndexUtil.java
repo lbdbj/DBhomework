@@ -33,16 +33,7 @@ public class AuthorIndexUtil {
 				AllStatic.authorPos[i1][i2]=0;
 		System.out.println("置零完成");
 	}
-//	因为有很多垃圾的author值，即没有空格的author值，所以将没有空格的author值去掉
-	public static boolean hasBlank(String str) {
-		str = str.trim();
-		char[]arr = str.toCharArray();
-		for(int i=0;i<arr.length;i++) {
-			if(arr[i] == ' ')
-				return true;
-		}
-		return false;
-	}
+	
 //给低精度作者索引数组赋0值
 		public static void setZero2() {
 			for(int i1=0; i1<AllStatic.authorPos2.length; i1++)
@@ -70,9 +61,6 @@ public class AuthorIndexUtil {
 			return hashcode;
 		}
 		
-		public static int getAnotherPos(int hashcode, int pos) {
-			return (hashcode+pos)&8388607;
-		}
 //		此方法用来根据作者名获取哈希值，并将作者所在文章的位置存到高精度哈希数组中
 		public static boolean assignValue(String str, int pos) {
 			int index = getAuthorPos(str, AllStatic.authorPos.length);
@@ -209,7 +197,7 @@ public class AuthorIndexUtil {
 				}
 	}
 	
-	public static List<ArticleInfo> getPosByFile(String author, RandomAccessFile rafAuthor1, RandomAccessFile rafSrc1,
+	public static List<ArticleInfo> getArticleByFile(String author, RandomAccessFile rafAuthor1, RandomAccessFile rafSrc1,
 			RandomAccessFile rafAuthor2,RandomAccessFile rafSrc2) {
 		int pos = getAuthorPos(author, AllStatic.authorPos.length);
 		List<ArticleInfo>list = new ArrayList<ArticleInfo>();

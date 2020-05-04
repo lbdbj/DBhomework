@@ -142,14 +142,14 @@ class ArticleHandler extends DefaultHandler{
 		contentBuilder.setLength(0);
 		if(null != tag && flag == 1) {
 			if(tag.equals("author")) {
-				if(AuthorIndexUtil.hasBlank(content)) {
+
 					authorCount++;
 					authorList.add(content);
 					sb.append('!');
 					sb.append(content);
 					sb.append("\r\n");
 					System.out.println(tag+":"+content);
-				}
+
 			}
 			else if(tag.equals("title")) {
 				title = content;
