@@ -68,6 +68,7 @@ private void addListener() {
 	bImportFile.addActionListener(listener);
 	bRelSearch.addActionListener(listener);
 	bStatistics.addActionListener(listener);
+	bPartSearch.addActionListener(listener);
 }
 	public static void main(String[] args) {
 		GUIUtil.showPanel(MainPanel.instance, 1);

@@ -26,6 +26,7 @@ public class BasicSearchListener implements ActionListener {
 				sb.append(c);
 		}
 		input = sb.toString();
+		System.out.println(input);
 		if(option.equals("×÷ÕßÃû")) {
 			try {
 				instance.itm.is = new BasicSearchService().getAllInfoByAuthor(input);
@@ -44,6 +45,6 @@ public class BasicSearchListener implements ActionListener {
 				e1.printStackTrace();
 			}
 		}
+		instance.input.setText("");
 	}
-
 }

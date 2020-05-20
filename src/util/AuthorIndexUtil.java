@@ -14,7 +14,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import entity.ArticleInfo;
-import entity.JudegeAuthor;
+import entity.Judege;
 
 //建立文章作者索引文件的工具类
 public class AuthorIndexUtil {
@@ -202,7 +202,7 @@ public class AuthorIndexUtil {
 		int pos = getAuthorPos(author, AllStatic.authorPos.length);
 		List<ArticleInfo>list = new ArrayList<ArticleInfo>();
 		String getAuthor = null;
-		JudegeAuthor ja = new JudegeAuthor();
+		Judege ja = new Judege();
 		int count = 0;
 		try {
 			rafAuthor1.seek(pos*400);

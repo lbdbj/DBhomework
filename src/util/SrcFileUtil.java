@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entity.ArticleInfo;
-import entity.JudegeAuthor;
+import entity.Judege;
 
 public class SrcFileUtil {
 	public static String formatStr(StringBuilder sb, int num) {
@@ -43,6 +43,9 @@ public class SrcFileUtil {
 			e.printStackTrace();
 		}
 		String str = sb.toString();
+		if (str.length()==0) {
+			return null;
+		}
 		if(str.length()>0 &&str.charAt(str.length()-1)=='.')
 			str = str.substring(0, str.length()-1);
 		return str.substring(1);
@@ -60,7 +63,7 @@ public class SrcFileUtil {
 		return new String(content);
 	}
 //	判断输入的作者名在指定位置的文章信息中是否存在
-	public static JudegeAuthor judgeAuthor(int pos, String author, int readLength, RandomAccessFile raf) throws IOException {
+	public static Judege judgeAuthor(int pos, String author, int readLength, RandomAccessFile raf) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		byte[]content = new byte[readLength];
 		try {
@@ -72,7 +75,7 @@ public class SrcFileUtil {
 				for(byte b : content) {
 					if((char)b == '\r'&&flag == 1) {
 						if(author.equals(sb.toString()))
-							return new JudegeAuthor(true, new String(content));
+							return new Judege(true, new String(content));
 						sb.setLength(0);
 						flag = 0;
 					}
@@ -89,8 +92,53 @@ public class SrcFileUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return new JudegeAuthor(false, new String(content));
+		return new Judege(false, new String(content));
 	}
+	
+//	判断输入的关键词在指定位置的文章信息中是否存在
+	public static Judege judgeSubtitles(int pos, String []keywords, int readLength, RandomAccessFile raf) throws IOException {
+		StringBuilder sb = new StringBuilder();
+		byte[]content = new byte[readLength];
+		try {
+			int flag = 0;
+			long moveLength = (long)(pos-1)*(long)readLength;
+			raf.seek(moveLength);
+			int result = raf.read(content);
+			if(result == readLength) {
+				for(byte b : content) {
+						if((char)b == '\r' && flag == 1)
+							break;
+						if((char)b == '*')
+							flag = 1;
+						if(flag == 1) {
+							sb.append((char)b);
+						}
+				}
+				
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String str = sb.toString();
+//		标题不存在的话，直接返回false
+		if(str.length() == 0)
+			return new Judege(false, str);
+		String[] subtitles = PartSearchUtil.subTitle(str);
+		int flag = 0;
+		for(String keyword : keywords) {
+			for(String subtitle : subtitles) {
+				if(subtitle.equals(keyword.toLowerCase()))
+					flag = 1;
+			}
+//			只要有一个关键词没有出现就返回false
+			if(flag == 0)
+				return new Judege(false, new String(content));
+		}
+		return new Judege(true, new String(content));
+	}
+	
 //	格式化文章信息
 	public static ArticleInfo formatArticle(String content) {
 		ArticleInfo article = new ArticleInfo();
@@ -148,6 +196,7 @@ public class SrcFileUtil {
 		}
 		return article;
 	}
+
 	public static void main(String[] args) {
 		String str = "zdfdgdssfs";
 		StringBuilder sb = new StringBuilder(str);

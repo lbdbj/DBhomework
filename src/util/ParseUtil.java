@@ -7,6 +7,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -29,7 +32,6 @@ import entity.ArticleInfo;
 
 public class ParseUtil{
 	public static List<ArticleInfo>list;
-	
 	public static List<ArticleInfo> myParse(String pathName) throws ParserConfigurationException, SAXException, IOException {
 SAXParserFactory factory = SAXParserFactory.newInstance();
 		
@@ -45,7 +47,7 @@ SAXParserFactory factory = SAXParserFactory.newInstance();
 		return list;
 	}
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
-		ParseUtil.myParse("src\\dblp.xml");
+		ParseUtil.myParse("D:\\DBhomework\\dblp.xml");
 }
 }
 class ArticleHandler extends DefaultHandler{
@@ -70,13 +72,13 @@ class ArticleHandler extends DefaultHandler{
 //		private static BufferedOutputStream bOut2 = null;
 		private static int authorCount = 0;
 		private static List<String> list = new ArrayList<String>();
+
+		private String[] subTitles = null;
 		
 	@Override
 	public void startDocument() throws SAXException {
 		// TODO Auto-generated method stub
 		super.startDocument();
-		AuthorIndexUtil.setZero();
-		AuthorIndexUtil.setZero2();
 		System.out.println("开始解析---");
 //		try {
 //			File dir = new File("d:/DBhomework");
@@ -110,7 +112,6 @@ class ArticleHandler extends DefaultHandler{
 	
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-	// TODO Auto-generated method stub
 		super.startElement(uri, localName, qName, attributes);
 //		if(articlePos1 == 10)
 //			System.exit(0);
@@ -120,7 +121,7 @@ class ArticleHandler extends DefaultHandler{
 				authorList = new ArrayList<String>();
 				flag = 1;
 				int c = articlePos1+1;
-				System.out.println("第"+c+"篇article-------------------------------------------------");
+				System.out.println("第"+c+"篇article---");
 			}
 		}
 	}
@@ -225,16 +226,28 @@ class ArticleHandler extends DefaultHandler{
 //					e.printStackTrace();
 //				}
 				articlePos1++;
-				for(String author : authorList) {
-					if(!AuthorIndexUtil.assignValue(author,articlePos1)) {
-						boolean b = AuthorIndexUtil.assignValue2(author, articlePos1);
-						if(b == false)
-							list.add(author);
-					}
-				}
+//				for(String author : authorList) {
+//					if(!AuthorIndexUtil.assignValue(author,articlePos1)) {
+//						boolean b = AuthorIndexUtil.assignValue2(author, articlePos1);
+//						if(b == false)
+//							list.add(author);
+//					}
+//				}
 //				if(!TitleIndexUtil.assignValue(title, articlePos1)) {
 //					TitleIndexUtil.assignValue2(title,articlePos1);
 //					}
+				subTitles = PartSearchUtil.subTitle(title);
+//				if(articlePos1<1000000)
+//					PartSearchUtil.assignValue(subTitles, 2097152, articlePos1);
+//				else if(articlePos1 == 1000000) {
+//					PartSearchUtil instance = new PartSearchUtil();
+//					instance.setFile1(2097152);
+//					instance.setFile2(2097152);
+//				}
+				
+//				for(Map.Entry<Integer, List<Integer>>m : AllStatic.map.entrySet())
+//					for(Integer i : m.getValue())
+//						System.out.println("哈希值为"+m.getKey()+"位置为"+i);
 			}else {
 //				向源文件2写入数据
 //				str = SrcFileUtil.formatStr(sb,5000);
@@ -265,14 +278,16 @@ class ArticleHandler extends DefaultHandler{
 //					e.printStackTrace();
 //				}
 				articlePos2++;
-				for(String author : authorList) {
-					if(!AuthorIndexUtil.assignValue(author,articlePos2+10000000)) {
-						AuthorIndexUtil.assignValue2(author, articlePos2+10000000);			
-					}
-				}
+//				for(String author : authorList) {
+//					if(!AuthorIndexUtil.assignValue(author,articlePos2+10000000)) {
+//						AuthorIndexUtil.assignValue2(author, articlePos2+10000000);			
+//					}
+//				}
 //				if(!TitleIndexUtil.assignValue(title, articlePos2+10000000)) {
 //					TitleIndexUtil.assignValue2(title,articlePos2+10000000);
 //					}
+				subTitles = PartSearchUtil.subTitle(title);
+//				PartSearchUtil.assignValue(subTitles, 2097152, articlePos2+10000000);
 			}
 			sb.setLength(0);
 			authorList = null;

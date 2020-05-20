@@ -9,6 +9,7 @@ import gui.panel.AnalysisPanel;
 import gui.panel.BasicSearchPanel;
 import gui.panel.ImportFilePanel;
 import gui.panel.MainPanel;
+import gui.panel.PartSearchPanel;
 import gui.panel.RelSearchPanel;
 import gui.panel.StatisticsPanel;
 import sun.nio.cs.ext.MacArabic;
@@ -32,6 +33,8 @@ public class ToolbarListener implements ActionListener {
 			p.workingPanel.show(AnalysisPanel.instance);
 		if(b == p.bImportFile)
 			p.workingPanel.show(ImportFilePanel.instance);
+		if(b == p.bPartSearch)
+			p.workingPanel.show(PartSearchPanel.instance);
 	}
 
 }

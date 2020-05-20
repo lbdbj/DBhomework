@@ -21,6 +21,10 @@ public class BasicSearchService {
 		RandomAccessFile raf3 = new RandomAccessFile(file3, "r");
 		RandomAccessFile raf4 = new RandomAccessFile(file4, "r");
 		List<ArticleInfo>articles = AuthorIndexUtil.getArticleByFile(author, raf1, raf2,raf3,raf4);
+		raf1.close();
+		raf2.close();
+		raf3.close();
+		raf4.close();
 		return articles;
 		
 	}
@@ -34,6 +38,10 @@ public class BasicSearchService {
 		RandomAccessFile raf3 = new RandomAccessFile(file3, "r");
 		RandomAccessFile raf4 = new RandomAccessFile(file4, "r");
 		List<ArticleInfo>articles = TitleIndexUtil.getArticleByFile(title, raf1, raf2,raf3,raf4);
+		raf1.close();
+		raf2.close();
+		raf3.close();
+		raf4.close();
 		return articles;
 	}
 	public static void main(String[] args) throws IOException {
