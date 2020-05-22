@@ -9,16 +9,16 @@ import javax.swing.table.TableModel;
 public class AnalyTableModel implements TableModel {
 
 	String columnNames[] = new String[] {"关键词","出现次数"};
-	List<String> as = new ArrayList<String>();
+	public List<String> as = new ArrayList<String>();
 	public AnalyTableModel() {
 		// TODO Auto-generated constructor stub
-		as.add("刘世伟");
-		as.add("冯兆鹏");
+//		as.add("刘世伟");
+//		as.add("冯兆鹏");
 	} 
 	@Override
 	public int getRowCount() {
 		// TODO Auto-generated method stub
-		return as.size();
+		return as.size()/2;
 	}
 
 	@Override
@@ -48,8 +48,15 @@ public class AnalyTableModel implements TableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		// TODO Auto-generated method stub
-		if(0 == columnIndex)
-			return as.get(rowIndex);
+		if(0 == columnIndex) {
+			System.out.println("colunmn="+columnIndex+" row="+rowIndex);
+			return as.get(2*rowIndex);
+		}
+		if(1 == columnIndex) {
+			System.out.println("colunmn="+columnIndex+" row="+rowIndex);
+			return as.get(2*rowIndex+1);
+		}
+			
 		else
 			return null;
 	}

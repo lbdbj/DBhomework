@@ -26,12 +26,13 @@ import org.xml.sax.helpers.DefaultHandler;
 import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry.Entry;
 
 import entity.ArticleInfo;
+import util.AnalysisClass.YearList;
 
 public class ParseUtil{
 	public static List<ArticleInfo>list;
 	
 	public static List<ArticleInfo> myParse(String pathName) throws ParserConfigurationException, SAXException, IOException {
-SAXParserFactory factory = SAXParserFactory.newInstance();
+		SAXParserFactory factory = SAXParserFactory.newInstance();
 		
 		SAXParser parser = factory.newSAXParser();
 		XMLReader xmlReader = parser.getXMLReader();
@@ -63,6 +64,15 @@ class ArticleHandler extends DefaultHandler{
 		private static int articlePos2=0;
 		
 		private static String title = new String();
+
+//		文章的年份
+		private static short year = 0;
+//		年份索引标识
+		private static int indexYear;
+//		每年的热词列表
+		private static String[] words;
+		//计数器
+		private static int count = 0;
 
 //		private static FileOutputStream out1 = null;
 //		private static FileOutputStream out2 = null;
@@ -144,7 +154,7 @@ class ArticleHandler extends DefaultHandler{
 			if(tag.equals("author")) {
 
 					authorCount++;
-					authorList.add(content);
+					//authorList.add(content);
 					sb.append('!');
 					sb.append(content);
 					sb.append("\r\n");
@@ -152,6 +162,7 @@ class ArticleHandler extends DefaultHandler{
 
 			}
 			else if(tag.equals("title")) {
+//				获取文章标题
 				title = content;
 				sb.append('*');
 				sb.append(content);
@@ -171,6 +182,8 @@ class ArticleHandler extends DefaultHandler{
 				System.out.println(tag+":"+content);
 			}
 			else if(tag.equals("year")) {
+//				获取文章年份，格式为short
+				year = Short.parseShort(content);
 				sb.append('$');
 				sb.append(content);
 				sb.append("\r\n");
@@ -191,7 +204,20 @@ class ArticleHandler extends DefaultHandler{
 		}
 		tag = null;
 		if("inproceedings".equals(qName) || "article".equals(qName)) {
-			System.out.println("作者个数为"+authorCount);
+//			向热词年份表插入数据
+//			获取索引
+			indexYear=AnalysisUtil.yearlist.getIndexOf(year);
+//			分解标题,获取纯净的单词流
+			words=title.replaceAll("[[^-]&&\\p{P}\\d]", "").replace(" - ","").split(" ");
+//			插入新年份
+			if(indexYear==-1) {
+				indexYear=AnalysisUtil.yearlist.addYear(year);
+			}
+			
+			AnalysisUtil.yearlist.addWords(indexYear, words);
+			System.out.println("count:"+(++count));
+			
+/*			System.out.println("作者个数为"+authorCount);
 			flag = 0;
 			int len = sb.length();
 			if(len<=500) {
@@ -274,9 +300,13 @@ class ArticleHandler extends DefaultHandler{
 //					TitleIndexUtil.assignValue2(title,articlePos2+10000000);
 //					}
 			}
+*/
+
 			sb.setLength(0);
-			authorList = null;
+//			authorList = null;  
+
 		}
+
 	}
 	
 	@Override
@@ -302,6 +332,7 @@ class ArticleHandler extends DefaultHandler{
 		System.out.println("解析完成---------------------------------");
 //		for(String s : list)
 //			System.out.println("泄露作者名为"+s);
+
 	}
 
 	public List<ArticleInfo> getArticles() {
