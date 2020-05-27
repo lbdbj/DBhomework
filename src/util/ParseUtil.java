@@ -29,6 +29,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry.Entry;
 
 import entity.ArticleInfo;
+
 import util.AnalysisClass.YearList;
 
 public class ParseUtil{
@@ -37,6 +38,7 @@ public class ParseUtil{
 //		创建SAX解析器的工厂类
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 //		获得SAX解析器
+
 		SAXParser parser = factory.newSAXParser();
 //		获取xml文件解析器
 		XMLReader xmlReader = parser.getXMLReader();
@@ -65,7 +67,9 @@ class ArticleHandler extends DefaultHandler{
 		private static int articlePos1=0;
 //		记录article块在srcfile2中的位置
 		private static int articlePos2=0;
+
 //		记录文章标题
+
 		private static String title = new String();
 
 //		文章的年份
@@ -197,6 +201,7 @@ class ArticleHandler extends DefaultHandler{
 			}
 		}
 		tag = null;
+
 		if("inproceedings".equals(qName) || "article".equals(qName)) {
 //			解析一篇文章结束令flag为0
 
@@ -253,6 +258,11 @@ class ArticleHandler extends DefaultHandler{
 //				向作者哈希表中赋值
 				for(String author : authorList) {
 						AuthorIndexUtil.assignValue(author, 4194304, articlePos1);
+
+					
+					//用哈希建立索引
+					AuthorCountUtil.recordAuthor(author, 0);
+
 				}
 //				切分标题
 				subTitles = PartSearchUtil.subTitle(title);
@@ -292,12 +302,17 @@ class ArticleHandler extends DefaultHandler{
 				TitleIndexUtil.assignValue(title, 8388608, articlePos2+10000000);
 //				向作者哈希表中赋值
 				for(String author : authorList) {
+
 					AuthorIndexUtil.assignValue(author, 4194304, articlePos2+10000000);
 			}
 //				切分标题
 				subTitles = PartSearchUtil.subTitle(title);
 //				向部分匹配搜索的关键词哈希表赋值
 				PartSearchUtil.assignValue(subTitles, 2097152, articlePos2+10000000);
+
+					AuthorCountUtil.recordAuthor(author, 0);
+
+
 			}
 
 
@@ -329,8 +344,18 @@ class ArticleHandler extends DefaultHandler{
 //		}
 		System.out.println("解析完成---"+"大文章"+articlePos2+"小文章"+articlePos1);
 		System.out.println("解析完成---------------------------------");
+
 //		创建热词分析的索引文件
 		AnalysisUtil.setFile();
+
+		
+		//将所有数据从哈希表中取出，通过维护一个100数据大小的最小堆，得到最大的100个数据
+		AuthorCount[] aTry = AuthorCountUtil.topK(AllStatic.authorArray, 100);
+		
+		//将一百个数据写进txt文件
+		AuthorCountUtil.setFileCount(aTry);
+		
+
 	}
 }
 
