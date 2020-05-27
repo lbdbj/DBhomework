@@ -29,6 +29,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry.Entry;
 
 import entity.ArticleInfo;
+import util.AnalysisClass.YearList;
 
 public class ParseUtil{
 	public static List<ArticleInfo>list;
@@ -66,6 +67,15 @@ class ArticleHandler extends DefaultHandler{
 		private static int articlePos2=0;
 //		记录文章标题
 		private static String title = new String();
+
+//		文章的年份
+		private static short year = 0;
+//		年份索引标识
+		private static int indexYear;
+//		每年的热词列表
+		private static String[] words;
+		//计数器
+//		private static int count = 0;
 
 //		private static FileOutputStream out1 = null;
 //		private static FileOutputStream out2 = null;
@@ -152,6 +162,7 @@ class ArticleHandler extends DefaultHandler{
 					sb.append("\r\n");
 			}
 			else if(tag.equals("title")) {
+//				获取文章标题
 				title = content;
 				sb.append('*');
 				sb.append(content);
@@ -168,6 +179,8 @@ class ArticleHandler extends DefaultHandler{
 				sb.append("\r\n");
 			}
 			else if(tag.equals("year")) {
+//				获取文章年份，格式为short
+				year = Short.parseShort(content);
 				sb.append('$');
 				sb.append(content);
 				sb.append("\r\n");
@@ -186,6 +199,23 @@ class ArticleHandler extends DefaultHandler{
 		tag = null;
 		if("inproceedings".equals(qName) || "article".equals(qName)) {
 //			解析一篇文章结束令flag为0
+
+//------------------------------------------------------------------------------------------------
+//			向热词年份表插入数据
+//			获取索引
+			indexYear=AnalysisUtil.yearlist.getIndexOf(year);
+//			分解标题,获取纯净的单词流
+			words=title.replaceAll("[[^-]&&\\p{P}\\d]", "").replace(" - ","").split(" ");
+//			插入新年份
+			if(indexYear==-1) {
+				indexYear=AnalysisUtil.yearlist.addYear(year);
+			}
+			
+			AnalysisUtil.yearlist.addWords(indexYear, words);
+//------------------------------------------------------------------------------------------------
+//			System.out.println("count:"+(++count));
+			
+//			System.out.println("作者个数为"+authorCount);
 			flag = 0;
 			int len = sb.length();
 //			如果文章中包含的字节数小于500
@@ -271,9 +301,13 @@ class ArticleHandler extends DefaultHandler{
 //				向部分匹配搜索的关键词哈希表赋值
 				PartSearchUtil.assignValue(subTitles, 2097152, articlePos2+10000000);
 			}
+
+
 			sb.setLength(0);
-			authorList = null;
+			authorList = null;  
+
 		}
+
 	}
 //	解析xml文件结束
 	@Override
@@ -296,6 +330,9 @@ class ArticleHandler extends DefaultHandler{
 //			}
 //		}
 		System.out.println("解析完成---"+"大文章"+articlePos2+"小文章"+articlePos1);
+		System.out.println("解析完成---------------------------------");
+//		创建热词分析的索引文件
+		AnalysisUtil.setFile();
 	}
 }
 
