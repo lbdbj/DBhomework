@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 
 import gui.listener.BasicSearchListener;
 import gui.model.InfTableModel;
+import jdk.internal.util.xml.impl.Input;
 import util.GUIUtil;
 import util.TableViewRenderer;
 
@@ -37,6 +38,8 @@ public class BasicSearchPanel extends JPanel {
 	public JTable t = new JTable(itm);
 	
 	public BasicSearchPanel () {
+//		输出信息时设置为自动换行
+		input.setLineWrap(true);
 		t.setRowHeight(40);
 		t.setDefaultRenderer(Object.class,new TableViewRenderer());
 		this.setLayout(new BorderLayout());

@@ -1,7 +1,7 @@
 package entity;
 
 import java.util.List;
-
+//这个类用来存储一篇文章的所有信息，并可以利用里面的函数获得和修改文章属性
 public class ArticleInfo {
 	private StringBuilder authors;
 	private String title;
@@ -28,6 +28,7 @@ public class ArticleInfo {
 	}
 	public void addAuthor(StringBuilder author) {
 		this.authors.append(author);
+		this.authors.append("\r\n");
 	}
 	public String getTitle() {
 		return title;

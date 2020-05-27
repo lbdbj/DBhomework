@@ -7,7 +7,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 public class RelTableModel implements TableModel {
-	String columnNames[] = new String[] {"合作作者名","合作论文题目"};
+	String columnNames[] = new String[] {"合作作者名"};
 	List<String> rs = new ArrayList<String>();
 	public RelTableModel() {
 		// TODO Auto-generated constructor stub

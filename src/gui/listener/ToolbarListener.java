@@ -22,7 +22,7 @@ public class ToolbarListener implements ActionListener {
 		MainPanel p =  MainPanel.instance;
 		
 		JButton b = (JButton)e.getSource();
-		
+//		点击相应的选项可以跳转到不同的界面
 		if(b == p.bBasicSearch)
 			p.workingPanel.show(BasicSearchPanel.instance);
 		if(b == p.bRelSearch)

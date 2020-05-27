@@ -32,52 +32,51 @@ import entity.ArticleInfo;
 
 public class ParseUtil{
 	public static List<ArticleInfo>list;
-	public static List<ArticleInfo> myParse(String pathName) throws ParserConfigurationException, SAXException, IOException {
-SAXParserFactory factory = SAXParserFactory.newInstance();
-		
+	public static void myParse(String pathName) throws ParserConfigurationException, SAXException, IOException {
+//		创建SAX解析器的工厂类
+		SAXParserFactory factory = SAXParserFactory.newInstance();
+//		获得SAX解析器
 		SAXParser parser = factory.newSAXParser();
+//		获取xml文件解析器
 		XMLReader xmlReader = parser.getXMLReader();
+//		忽略dtd文件
 		xmlReader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+//		新建自定义的解析器对象
 		ArticleHandler handler = new ArticleHandler();
+//		指定解析器
 		xmlReader.setContentHandler(handler);
-		
+//		开始解析指定文件
 		xmlReader.parse(new InputSource(pathName));
-		list = handler.getArticles();
 		
-		return list;
 	}
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
 		ParseUtil.myParse("D:\\DBhomework\\dblp.xml");
 }
 }
 class ArticleHandler extends DefaultHandler{
-		private List<ArticleInfo> articles;
 		private List<String>authorList;
 		private StringBuilder sb = new StringBuilder();
 		private StringBuilder contentBuilder = new StringBuilder();
-		private static String str = new String();
 //		用于判断一个article块是否结束
 		private static int flag = 0;
 		private String tag;
-//		记录article块在源文件1中的位置
+//		记录article块在srcfile1中的位置
 		private static int articlePos1=0;
-//		记录article块在源文件2中的位置
+//		记录article块在srcfile2中的位置
 		private static int articlePos2=0;
-		
+//		记录文章标题
 		private static String title = new String();
 
 //		private static FileOutputStream out1 = null;
 //		private static FileOutputStream out2 = null;
 //		private static BufferedOutputStream bOut1 = null;
 //		private static BufferedOutputStream bOut2 = null;
-		private static int authorCount = 0;
-		private static List<String> list = new ArrayList<String>();
-
+//		记录切割标题后的关键词
 		private String[] subTitles = null;
 		
 	@Override
+//	开始解析xml文件
 	public void startDocument() throws SAXException {
-		// TODO Auto-generated method stub
 		super.startDocument();
 		System.out.println("开始解析---");
 //		try {
@@ -101,6 +100,7 @@ class ArticleHandler extends DefaultHandler{
 //					titleFile2.createNewFile();
 //			out1 = new FileOutputStream("d:/DBhomework/srcfile1.txt");
 //			out2 = new FileOutputStream("d:/DBhomework/srcfile2.txt");
+//		                           创建缓冲流对象
 //			bOut1 = new BufferedOutputStream(out1,10000000);
 //			bOut2 = new BufferedOutputStream(out2,5000000);
 //			
@@ -111,14 +111,16 @@ class ArticleHandler extends DefaultHandler{
 	}
 	
 	@Override
+//	开始解析一个开始标签
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 		super.startElement(uri, localName, qName, attributes);
-//		if(articlePos1 == 10)
-//			System.exit(0);
 		if(null != qName) {
 			tag = qName;
+//			如果获取的tag为article或者inproceedings代表一篇文章开始
 			if("inproceedings".equals(tag) || "article".equals(tag)) {
+//				新建一个暂存作者的list
 				authorList = new ArrayList<String>();
+//				flag为1代表当前正在解析一篇符合要求的文章
 				flag = 1;
 				int c = articlePos1+1;
 				System.out.println("第"+c+"篇article---");
@@ -127,8 +129,8 @@ class ArticleHandler extends DefaultHandler{
 	}
 	
 	@Override
+//	获取开始标签和结束标签中间的内容
 	public void characters(char[] ch, int start, int length) throws SAXException {
-	// TODO Auto-generated method stub
 		super.characters(ch, start, length);
 		if(null != tag && flag == 1)
 			contentBuilder.append(ch,start,length);
@@ -136,72 +138,63 @@ class ArticleHandler extends DefaultHandler{
 	}
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
-	// TODO Auto-generated method stub
 		super.endElement(uri, localName, qName);
 		String content = contentBuilder.toString();
 		content = content.trim();
 		contentBuilder.setLength(0);
+//		flag为1代表当前正在解析一个符合要求的article
 		if(null != tag && flag == 1) {
+//			根据解析到的tag的内容，分别在内容前面添加不同的标识符
 			if(tag.equals("author")) {
-
-					authorCount++;
 					authorList.add(content);
 					sb.append('!');
 					sb.append(content);
 					sb.append("\r\n");
-					System.out.println(tag+":"+content);
-
 			}
 			else if(tag.equals("title")) {
 				title = content;
 				sb.append('*');
 				sb.append(content);
 				sb.append("\r\n");
-				System.out.println(tag+":"+content);
 				}
 			else if(tag.equals("booktitle") || tag.equals("journal")) {
 				sb.append('@');
 				sb.append(content);
 				sb.append("\r\n");
-				System.out.println(tag+":"+content);
 			}
 			else if(tag.equals("volume")) {
 				sb.append('#');
 				sb.append(content);
 				sb.append("\r\n");
-				System.out.println(tag+":"+content);
 			}
 			else if(tag.equals("year")) {
 				sb.append('$');
 				sb.append(content);
 				sb.append("\r\n");
-				System.out.println(tag+":"+content);
 			}
 			else if(tag.equals("pages")) {
 				sb.append('%');
 				sb.append(content);
 				sb.append("\r\n");
-				System.out.println(tag+":"+content);
 			}
 			else if(tag.equals("ee")) {
 				sb.append('^');
 				sb.append(content);
 				sb.append("\r\n");
-				System.out.println(tag+":"+content);
 			}
 		}
 		tag = null;
 		if("inproceedings".equals(qName) || "article".equals(qName)) {
-			System.out.println("作者个数为"+authorCount);
+//			解析一篇文章结束令flag为0
 			flag = 0;
 			int len = sb.length();
+//			如果文章中包含的字节数小于500
 			if(len<=500) {
-////				向源文件1写入数据
+////				向srcfile1写入文章信息
 //				str = SrcFileUtil.formatStr(sb,500);
 //				try {
 //					byte[] bs = str.getBytes();
 //					int lenb = bs.length;
-//					System.out.println(lenb);
 //					if(lenb > 500) {
 //						byte bs2[] = new byte[500];
 //						for(int i=0; i<500; i++)
@@ -225,31 +218,20 @@ class ArticleHandler extends DefaultHandler{
 //					// TODO Auto-generated catch block
 //					e.printStackTrace();
 //				}
+//				文章地址自增
 				articlePos1++;
-//				for(String author : authorList) {
-//					if(!AuthorIndexUtil.assignValue(author,articlePos1)) {
-//						boolean b = AuthorIndexUtil.assignValue2(author, articlePos1);
-//						if(b == false)
-//							list.add(author);
-//					}
-//				}
-//				if(!TitleIndexUtil.assignValue(title, articlePos1)) {
-//					TitleIndexUtil.assignValue2(title,articlePos1);
-//					}
+//				向标题哈希表中赋值
+				TitleIndexUtil.assignValue(title, 8388608, articlePos1);
+//				向作者哈希表中赋值
+				for(String author : authorList) {
+						AuthorIndexUtil.assignValue(author, 4194304, articlePos1);
+				}
+//				切分标题
 				subTitles = PartSearchUtil.subTitle(title);
-//				if(articlePos1<1000000)
-//					PartSearchUtil.assignValue(subTitles, 2097152, articlePos1);
-//				else if(articlePos1 == 1000000) {
-//					PartSearchUtil instance = new PartSearchUtil();
-//					instance.setFile1(2097152);
-//					instance.setFile2(2097152);
-//				}
-				
-//				for(Map.Entry<Integer, List<Integer>>m : AllStatic.map.entrySet())
-//					for(Integer i : m.getValue())
-//						System.out.println("哈希值为"+m.getKey()+"位置为"+i);
+//				向部分匹配搜索的关键词哈希表赋值
+				PartSearchUtil.assignValue(subTitles, 2097152, articlePos1);
 			}else {
-//				向源文件2写入数据
+////				向srcfile2写入文章信息
 //				str = SrcFileUtil.formatStr(sb,5000);
 //				try {
 //					byte[] bs = str.getBytes();
@@ -278,27 +260,26 @@ class ArticleHandler extends DefaultHandler{
 //					e.printStackTrace();
 //				}
 				articlePos2++;
-//				for(String author : authorList) {
-//					if(!AuthorIndexUtil.assignValue(author,articlePos2+10000000)) {
-//						AuthorIndexUtil.assignValue2(author, articlePos2+10000000);			
-//					}
-//				}
-//				if(!TitleIndexUtil.assignValue(title, articlePos2+10000000)) {
-//					TitleIndexUtil.assignValue2(title,articlePos2+10000000);
-//					}
+//				向标题哈希表中赋值
+				TitleIndexUtil.assignValue(title, 8388608, articlePos2+10000000);
+//				向作者哈希表中赋值
+				for(String author : authorList) {
+					AuthorIndexUtil.assignValue(author, 4194304, articlePos2+10000000);
+			}
+//				切分标题
 				subTitles = PartSearchUtil.subTitle(title);
-//				PartSearchUtil.assignValue(subTitles, 2097152, articlePos2+10000000);
+//				向部分匹配搜索的关键词哈希表赋值
+				PartSearchUtil.assignValue(subTitles, 2097152, articlePos2+10000000);
 			}
 			sb.setLength(0);
 			authorList = null;
 		}
 	}
-	
+//	解析xml文件结束
 	@Override
 	public void endDocument() throws SAXException {
-	// TODO Auto-generated method stub
 		super.endDocument();
-//		刷新缓存流将缓存中的数据输出到文件
+////		刷新缓存流将缓存中的数据输出到文件
 //		try {
 //			bOut1.flush();
 //			bOut2.flush();
@@ -314,17 +295,7 @@ class ArticleHandler extends DefaultHandler{
 //				e.printStackTrace();
 //			}
 //		}
-		System.out.println("解析完成---------------------------------");
-//		for(String s : list)
-//			System.out.println("泄露作者名为"+s);
-	}
-
-	public List<ArticleInfo> getArticles() {
-		return articles;
-	}
-
-	public void setArticles(List<ArticleInfo> articles) {
-		this.articles = articles;
+		System.out.println("解析完成---"+"大文章"+articlePos2+"小文章"+articlePos1);
 	}
 }
 

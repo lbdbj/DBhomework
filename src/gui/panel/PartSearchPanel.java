@@ -33,6 +33,8 @@ public class PartSearchPanel extends JPanel {
 	public JTable t = new JTable(itm);
 	
 	public PartSearchPanel () {
+//		输出信息时设置为自动换行
+		input.setLineWrap(true);
 		t.setRowHeight(40);
 		t.setDefaultRenderer(Object.class,new TableViewRenderer());
 		this.setLayout(new BorderLayout());

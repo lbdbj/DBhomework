@@ -13,6 +13,7 @@ public class CenterPanel  extends JPanel {
 	private double rate;
 	private boolean strech;
 	private JComponent c;
+//	用来创建一个可以按比例放大缩小的居中面板
 	public CenterPanel(double rate,boolean strech) {
 		this.setLayout(null);
 		this.rate = rate;
@@ -23,10 +24,13 @@ public class CenterPanel  extends JPanel {
 		this.rate = rate;
 		this.strech = true;
 	}
+//	绘制面板的函数
 	public void repaint() {
 		if(c != null) {
+//			获取面板的原始尺寸
 			Dimension containerSize = this.getSize();
 			Dimension componentSize = c.getPreferredSize();
+//			计算按比例居中后面板的尺寸
 			if(strech)
 			c.setSize((int)(containerSize.width*rate),(int)(containerSize.height*rate));
 			else
@@ -36,6 +40,7 @@ public class CenterPanel  extends JPanel {
 		}
 		super.repaint();
 	}
+//	显示一个新的功能界面
 	public void show(JComponent p) {
 		this.c = p;
 		Component []cs = getComponents();
@@ -47,17 +52,4 @@ public class CenterPanel  extends JPanel {
 		//如果p是指定类型就执行更新数据的方法
 		this.updateUI();
 	}
-	public static void main(String []args) {
-		JFrame f = new JFrame();
-		f.setSize(200,200);
-		f.setLocationRelativeTo(null);
-		CenterPanel cp = new CenterPanel(0.85,true);
-		f.setContentPane(cp);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setVisible(true);
-        JButton b  =new JButton("abc");
-        cp.show(b);
-		
-	}
-
 }

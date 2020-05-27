@@ -14,6 +14,7 @@ import entity.Judege;
 import gui.panel.PartSearchPanel;
 import util.PartSearchUtil;
 import util.SrcFileUtil;
+import util.IndexFileUtil;
 
 public class PartSearchService {
 	public List<ArticleInfo> getAllInfoByKeywords(String keywordsStr) throws IOException {
@@ -33,31 +34,35 @@ public class PartSearchService {
 		RandomAccessFile raf3 = new RandomAccessFile(file3, "r");
 		RandomAccessFile raf4 = new RandomAccessFile(file4, "r");
 //		存储包含给定关键词的文章位置
-		int allPos[] = null;
-		
-		if(keywords.length == 0)
+		int allPos[] = null;	
+//		如果没有输入信息给出提示
+		if(keywords.length == 0) {
 			JOptionPane.showMessageDialog(instance, "您输入的关键词格式不对", "INFORMATION_MESSAGE",
 					JOptionPane.INFORMATION_MESSAGE);
+		}
+//		如果关键词只有一个，直接获得文章地址数组
 		else if (keywords.length == 1) {
-			allPos = PartSearchUtil.getAllPos(keywords[0], raf1, raf2);
+			allPos = IndexFileUtil.getAllPos(keywords[0], raf1, raf2, 2097152);
 		}else {
-			allPos =  PartSearchUtil.getAllPos(keywords[0], raf1, raf2);
+//			如果关键词多于1个就获取若干个文章地址数组，并求出这些数组的交集
+			allPos =  IndexFileUtil.getAllPos(keywords[0], raf1, raf2, 2097152);
 			for(int i=1; i<keywords.length; i++) {
-				int temp[] = PartSearchUtil.getAllPos(keywords[i], raf1, raf2);
+				int temp[] = IndexFileUtil.getAllPos(keywords[i], raf1, raf2, 2097152);
 				allPos = PartSearchUtil.getIntersection(allPos, temp);
 			}
 		}
-		if(allPos.length == 0)
-			JOptionPane.showMessageDialog(instance, "没有查询到文章信息，请修改后重新查询", "INFORMATION_MESSAGE",
-					JOptionPane.INFORMATION_MESSAGE);
-		else {
+		if(allPos.length != 0) {
+//			遍历文章地址数组
 			for(int pos : allPos) {
 				Judege j = new Judege();
+//				如果地址值小于10000000就到srcfile1文件中查找
 				if (pos<10000000) {
 					j = SrcFileUtil.judgeSubtitles(pos, keywords, 500, raf3);
+//					如果文章中包含所有给定的关键词就把文章对象存入list
 					if(j.isSame)
 						articles.add(SrcFileUtil.formatArticle(j.content));
 				}else {
+//					如果地址值大于10000000就到srcfile2文件中查找
 					j = SrcFileUtil.judgeSubtitles(pos-10000000, keywords, 5000, raf4);
 					if(j.isSame)
 						articles.add(SrcFileUtil.formatArticle(j.content));
@@ -68,9 +73,11 @@ public class PartSearchService {
 		raf3.close();
 		raf2.close();
 		raf1.close();
-		if(articles.size() == 0)
+//		如果没有查到符合要求的文章给出提示信息
+		if(articles.size() == 0) {
 			JOptionPane.showMessageDialog(instance, "没有查询到文章信息，请修改后重新查询", "INFORMATION_MESSAGE",
 					JOptionPane.INFORMATION_MESSAGE);
+		}
 		return articles;
 	}
 	public static void main(String[] args) throws IOException {

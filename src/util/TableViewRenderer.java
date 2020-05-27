@@ -6,6 +6,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.TableCellRenderer;
 
+//这个类的作用是使表格中的单元框可以伸缩
 public class TableViewRenderer extends JTextArea implements TableCellRenderer {
 	
 	public TableViewRenderer() {

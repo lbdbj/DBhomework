@@ -9,7 +9,9 @@ import javax.swing.table.TableModel;
 import entity.ArticleInfo;
 
 public class InfTableModel implements TableModel {
+//	设置表格显示的列名（属性名）
 	String columnNames[] = new String[] {"作者","题目","发表杂志","卷号","出版时间","页数","链接"};
+//	存储表格显示的内容
 	public List<ArticleInfo> is = new ArrayList<ArticleInfo>();
 	
 	public InfTableModel() {
@@ -45,6 +47,7 @@ public class InfTableModel implements TableModel {
 		return false;
 	}
 
+//	设置表格指定行列的内容
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		// TODO Auto-generated method stub

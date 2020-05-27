@@ -26,7 +26,7 @@ public static RelSearchPanel instance = new RelSearchPanel();
 	JLabel label = new JLabel("作者名");
 	
 //	设置显示信息的表格
-	String columnNames[] = new String[] {"合作作者名","合作论文题目"};
+	String columnNames[] = new String[] {"合作作者名"};
 	public RelTableModel rtm = new RelTableModel();
 	public JTable t = new JTable(rtm);
 	

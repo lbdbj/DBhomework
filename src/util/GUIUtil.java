@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 
 public class GUIUtil {
 	private static String imageFolder = "D:/hutubill_image/img";
+//	用来绘制选项侧边栏
 	public static void setImageIcon(JButton b, String fileName, String tip) {
         ImageIcon i = new ImageIcon(new File(imageFolder, fileName).getAbsolutePath());
         b.setIcon(i);
@@ -25,14 +26,16 @@ public class GUIUtil {
         b.setHorizontalTextPosition(JButton.CENTER);
         b.setText(tip);
     }
- 
+// 设置组件的颜色
 	public static void setColor(Color color,JComponent...cs) {
 		for(JComponent c : cs) {
 			c.setForeground(color);
 		}
 	}
+//	用来按比例显示面板
 public static void showPanel(JPanel p, double stretchRate) {
 	JFrame f = new JFrame();
+//	设置窗口大小
 	f.setSize(600,600);
 	f.setLocationRelativeTo(null);
 	CenterPanel cp = new CenterPanel(stretchRate);
@@ -40,47 +43,5 @@ public static void showPanel(JPanel p, double stretchRate) {
 	f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     f.setVisible(true);
     cp.show(p);
-}
-public static void showPanel(JPanel p) {
-	showPanel(p,0.85);
-}
-public static boolean checkEmpty(JTextField tf,String input) {
-	String text = tf.getText().trim();
-	if(text.length() == 0) {
-		JOptionPane.showMessageDialog(null, "输入不能为空");
-		return false;
 	}
-	return true;
-}
-public static boolean checkNumber(JTextField tf,String input) {
-	if(!checkEmpty(tf,input))
-		return false;
-	else {
-		String text = tf.getText().trim();
-		try {
-			Integer.parseInt(text);
-			return true;
-		}catch(NumberFormatException e1) {
-			JOptionPane.showMessageDialog(null, "输入必须为整数");
-			 tf.grabFocus();
-	         return false;
-		}
-	}
-}
-public static boolean checkZero(JTextField tf,String input) {
-	if(!checkNumber(tf,input))
-		return false;
-	else {
-		String text = tf.getText().trim();
-			if(0 == Integer.parseInt(text)) {
-			JOptionPane.showMessageDialog(null, "输入必须为整数");
-			 tf.grabFocus();
-			 return false;
-			}
-	         return true;
-	}
-}
-public static int getInt(JTextField tf) {
-	return Integer.parseInt(tf.getText());
-}
 }

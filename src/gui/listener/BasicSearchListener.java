@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import entity.ArticleInfo;
 import gui.panel.BasicSearchPanel;
 import service.BasicSearchService;
@@ -15,36 +17,37 @@ public class BasicSearchListener implements ActionListener {
 	public List<ArticleInfo>list = new ArrayList<ArticleInfo>();
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+//		获得基本搜索界面的实例
 		BasicSearchPanel instance = BasicSearchPanel.instance;
+//		获取下拉框
 		String option = (String) instance.cb.getSelectedItem();
+//		获取文本输入框输入的信息
 		String input = instance.input.getText();
-//		去除输入内容中的换行
-		char[]arr = input.toCharArray();
-		for(char c : arr) {
-			if(c!='\r' && c!='\n')
-				sb.append(c);
+//		如果未输入信息就点击搜索给出提示
+		if(input.length()==0) {
+			JOptionPane.showMessageDialog(instance, "请输入信息后查询", "INFORMATION_MESSAGE",
+					JOptionPane.INFORMATION_MESSAGE);
+			return;
 		}
-		input = sb.toString();
-		System.out.println(input);
+//		如果选择的是作者搜索，调用作者搜索的函数
 		if(option.equals("作者名")) {
 			try {
 				instance.itm.is = new BasicSearchService().getAllInfoByAuthor(input);
-				instance.t.updateUI();
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			instance.t.updateUI();
 			
 		}else {
+//			选择的是标题搜索
 			try {
 				instance.itm.is = new BasicSearchService().getAllInfoByTitle(input);
-				instance.t.updateUI();
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			instance.t.updateUI();
 		}
-		instance.input.setText("");
 	}
 }
