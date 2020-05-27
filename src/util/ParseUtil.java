@@ -204,6 +204,7 @@ class ArticleHandler extends DefaultHandler{
 		}
 		tag = null;
 		if("inproceedings".equals(qName) || "article".equals(qName)) {
+//------------------------------------------------------------------------------------------------
 //			向热词年份表插入数据
 //			获取索引
 			indexYear=AnalysisUtil.yearlist.getIndexOf(year);
@@ -215,9 +216,10 @@ class ArticleHandler extends DefaultHandler{
 			}
 			
 			AnalysisUtil.yearlist.addWords(indexYear, words);
+//------------------------------------------------------------------------------------------------
 			System.out.println("count:"+(++count));
 			
-/*			System.out.println("作者个数为"+authorCount);
+			System.out.println("作者个数为"+authorCount);
 			flag = 0;
 			int len = sb.length();
 			if(len<=500) {
@@ -300,10 +302,10 @@ class ArticleHandler extends DefaultHandler{
 //					TitleIndexUtil.assignValue2(title,articlePos2+10000000);
 //					}
 			}
-*/
+
 
 			sb.setLength(0);
-//			authorList = null;  
+			authorList = null;  
 
 		}
 
@@ -330,6 +332,8 @@ class ArticleHandler extends DefaultHandler{
 //			}
 //		}
 		System.out.println("解析完成---------------------------------");
+//		创建热词分析的索引文件
+		AnalysisUtil.setFile();
 //		for(String s : list)
 //			System.out.println("泄露作者名为"+s);
 

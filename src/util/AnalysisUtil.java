@@ -202,10 +202,10 @@ public class AnalysisUtil {
 	
 	
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
-		ParseUtil.myParse("src\\dblp.xml");
-		AnalysisUtil instance = AnalysisUtil.instance;
+//		ParseUtil.myParse("src\\dblp.xml");
+//		AnalysisUtil instance = AnalysisUtil.instance;
 		System.out.println("热点词列表创建完成");
-		instance.setFile();
+		AnalysisUtil.setFile();
 		System.out.println("热点词文件创建完成");
 		
 	}
