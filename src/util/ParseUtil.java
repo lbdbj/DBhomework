@@ -234,7 +234,7 @@ class ArticleHandler extends DefaultHandler{
 				for(String author : authorList) {
 					
 					//用哈希建立索引
-					AuthorIndexUtil.recordAuthor(author, 0);
+					AuthorCountUtil.recordAuthor(author, 0);
 
 					
 					if(!AuthorIndexUtil.assignValue(author,articlePos1)) {
@@ -277,7 +277,7 @@ class ArticleHandler extends DefaultHandler{
 //				}
 				articlePos2++;
 				for(String author : authorList) {
-					AuthorIndexUtil.recordAuthor(author, 0);
+					AuthorCountUtil.recordAuthor(author, 0);
 
 					if(!AuthorIndexUtil.assignValue(author,articlePos2+10000000)) {
 						AuthorIndexUtil.assignValue2(author, articlePos2+10000000);			
@@ -318,7 +318,7 @@ class ArticleHandler extends DefaultHandler{
 		AuthorCount[] aTry = AuthorCountUtil.topK(AllStatic.authorArray, 100);
 		
 		//将一百个数据写进txt文件
-		AuthorIndexUtil.setFileCount(aTry);
+		AuthorCountUtil.setFileCount(aTry);
 		
 //		for(String s : list)
 //			System.out.println("泄露作者名为"+s);
