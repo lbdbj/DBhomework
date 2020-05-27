@@ -204,14 +204,12 @@ class ArticleHandler extends DefaultHandler{
 //			向热词年份表插入数据
 //			获取索引
 			indexYear=AnalysisUtil.yearlist.getIndexOf(year);
-//			分解标题,获取纯净的单词流
-			words=title.replaceAll("[[^-]&&\\p{P}\\d]", "").replace(" - ","").split(" ");
 //			插入新年份
 			if(indexYear==-1) {
 				indexYear=AnalysisUtil.yearlist.addYear(year);
 			}
 			
-			AnalysisUtil.yearlist.addWords(indexYear, words);
+			AnalysisUtil.yearlist.addWords(indexYear, title);
 //------------------------------------------------------------------------------------------------
 //			System.out.println("count:"+(++count));
 			

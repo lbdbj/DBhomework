@@ -24,14 +24,15 @@ import util.AnalysisClass.YearList;
 
 //用于热点分析的工具类
 public class AnalysisUtil {
-	public static AnalysisUtil instance = new AnalysisUtil();
 	
 	//文件输出类
 	public static FileOutputStream out = null;
 	public static BufferedOutputStream bout = null;
-	/**热词记录文件单个记录的总长
-	 * 
-	 */
+	//文件存放的路径
+	public static String DIR_PATH = "d:/DBhomework";
+	public static String WORDS_PATH = "AnalysisWords.txt";
+	public static String YEARS_PATH = "AnalysisIndex.txt";
+	//热词记录文件单个记录的总长
 	public static int LENGTH = 300;
 	/**用于记录热词数量的类
 	 * YearList contains Year, [Year]->WordList
@@ -44,7 +45,7 @@ public class AnalysisUtil {
 	 * @param index -对应年份的索引值
 	 * @return String：“词!数!词!数!...    ”,以“ ”补齐至总长为LENGTH的字符串
 	 */
-	private static String getWordsOfYear(int index) {
+	private static String setWordsToString(int index) {
 		int i = 0;
 		StringBuilder sb = new StringBuilder();
 		//获取前十的排名
@@ -75,7 +76,7 @@ public class AnalysisUtil {
 	/**供内部写文件用：获取年份的顺序字符串，用作读文件的索引
 	 * @return String ：“年份!年份!...”，以"!"分割的年份字符串
 	 */
-	private static String getIndexOfYear() {
+	private static String setYearsToString() {
 		int i = 0;
 		StringBuilder sb = new StringBuilder();
 		for(i=0;i<yearlist.size;i++) {
@@ -90,13 +91,13 @@ public class AnalysisUtil {
 	 */
 	public static void setFile() {
 		try {
-			File dir = new File("d:/DBhomework");
+			File dir = new File(DIR_PATH);
 //			如果文件夹不存在就创建
 			if(!dir.exists()) {
 				dir.mkdir();
 			}
-			File YearsFile = new File(dir,"AnalysisIndex.txt");
-			File WordsFile = new File(dir,"AnalysisWords.txt");
+			File YearsFile = new File(dir,YEARS_PATH);
+			File WordsFile = new File(dir,WORDS_PATH);
 //			文件不存在就创建新文件
 			if(!YearsFile.exists())
 				YearsFile.createNewFile();
@@ -108,7 +109,7 @@ public class AnalysisUtil {
 			out = new FileOutputStream(WordsFile);
 			bout = new BufferedOutputStream(out, 5242880);
 			for(int i=0; i<yearlist.size; i++){
-				str=getWordsOfYear(i);
+				str=setWordsToString(i);
 				bout.write(str.getBytes());
 			}
 			bout.close();
@@ -116,7 +117,7 @@ public class AnalysisUtil {
 			//解析yearlist的年份索引并写到文件中
 			out = new FileOutputStream(YearsFile);
 			bout = new BufferedOutputStream(out, 5242880);
-			str=getIndexOfYear();
+			str=setYearsToString();
 			bout.write(str.getBytes());
 			
 			

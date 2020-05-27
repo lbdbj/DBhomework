@@ -13,7 +13,7 @@ public class AnalysisService {
 	 * @throws FileNotFoundException 
 	 */
 	public static String[] getYearItems() throws IOException {
-		File IndexFile = new File("D:\\DBhomework\\AnalysisIndex.txt");
+		File IndexFile = new File(AnalysisUtil.DIR_PATH+"\\"+AnalysisUtil.YEARS_PATH);
 		RandomAccessFile raf = new RandomAccessFile(IndexFile, "r");
 		return AnalysisUtil.getYearItem(raf);
 	}
@@ -24,7 +24,7 @@ public class AnalysisService {
 	 * @throws IOException
 	 */
 	public static int getPosByYear(String year) throws IOException {
-		File IndexFile = new File("D:\\DBhomework\\AnalysisIndex.txt");
+		File IndexFile = new File(AnalysisUtil.DIR_PATH+"\\"+AnalysisUtil.YEARS_PATH);
 		RandomAccessFile raf = new RandomAccessFile(IndexFile, "r");
 		return AnalysisUtil.getPosOfWords(year, raf);
 	}
@@ -34,7 +34,7 @@ public class AnalysisService {
 	 * @throws IOException
 	 */
 	public static String[] getWordsByPos(int pos) throws IOException {
-		File WordsFile = new File("D:\\DBhomework\\AnalysisWords.txt");
+		File WordsFile = new File(AnalysisUtil.DIR_PATH+"\\"+AnalysisUtil.WORDS_PATH);
 		RandomAccessFile raf = new RandomAccessFile(WordsFile, "r");
 		return AnalysisUtil.getWordsOfPos(pos, AnalysisUtil.LENGTH, raf);
 	}
