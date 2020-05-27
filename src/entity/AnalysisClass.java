@@ -1,4 +1,4 @@
-package util;
+package entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -203,7 +203,7 @@ public class AnalysisClass {
 	}
 	
 	//纪年类
-	class Year{
+	public class Year{
 		//年份
 		public short year;
 		//单词列表
@@ -216,7 +216,7 @@ public class AnalysisClass {
 	}
 	
 	//纪年列表的包装类
-	class YearList{
+	public class YearList{
 		//变量
 		public List<Year> list;
 		public int size;

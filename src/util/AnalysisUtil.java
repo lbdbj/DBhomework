@@ -17,10 +17,10 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import entity.AnalysisClass;
 import entity.ArticleInfo;
-//import entity.JudegeAuthor;
-import util.AnalysisClass.WordList;
-import util.AnalysisClass.YearList;
+import entity.AnalysisClass.WordList;
+import entity.AnalysisClass.YearList;
 
 //用于热点分析的工具类
 public class AnalysisUtil {

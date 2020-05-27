@@ -29,8 +29,8 @@ import org.xml.sax.helpers.DefaultHandler;
 import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry.Entry;
 
 import entity.ArticleInfo;
-
-import util.AnalysisClass.YearList;
+import entity.AuthorCount;
+import entity.AnalysisClass.YearList;
 
 public class ParseUtil{
 	public static List<ArticleInfo>list;
