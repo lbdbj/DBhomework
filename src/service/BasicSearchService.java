@@ -1,12 +1,16 @@
 package service;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.util.List;
 
 import entity.ArticleInfo;
+import entity.AuthorCount;
 import util.AuthorIndexUtil;
 import util.TitleIndexUtil;
 
@@ -36,6 +40,7 @@ public class BasicSearchService {
 		List<ArticleInfo>articles = TitleIndexUtil.getArticleByFile(title, raf1, raf2,raf3,raf4);
 		return articles;
 	}
+
 	public static void main(String[] args) throws IOException {
 		List<ArticleInfo> list = new BasicSearchService().getAllInfoByAuthor("H. Vincent Poor");
 		int i=0;

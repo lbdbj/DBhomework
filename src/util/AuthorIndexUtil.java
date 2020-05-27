@@ -14,6 +14,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import entity.ArticleInfo;
+import entity.AuthorCount;
 import entity.JudegeAuthor;
 
 //建立文章作者索引文件的工具类
@@ -22,6 +23,9 @@ public class AuthorIndexUtil {
 	
 	public FileOutputStream out = null;
 	public BufferedOutputStream bout = null;
+	
+	public static FileOutputStream outCount = null;
+	public static BufferedOutputStream boutCount = null;
 //	记录发生哈希冲突的次数
 	private static int conflict = 0;
 //	记录泄露的记录个数
@@ -89,6 +93,39 @@ public class AuthorIndexUtil {
 			leftCount++;
 			return false;
 		}
+		
+		
+		//用闭哈希的方法，建立索引
+		public static boolean recordAuthor(String str, int conflict) {
+
+			//用getAuthorPos方法，加上发生冲突时的线性探测，通过作者名字获取下标index
+			//冲突时采用二次冲突进行探测
+			int index = (getAuthorPos(str, AllStatic.authorArray.length)+conflict*conflict) % AllStatic.authorArray.length;
+			//对数组长度取余，防止溢出
+			
+			//如果authorArray[hashcode]是空的，没有发生冲突，就插入
+			if(AllStatic.authorArray[index] == null) {
+				AllStatic.authorArray[index] = new AuthorCount(str);
+				//System.out.println("为空，插入"+str);
+				return true;
+			}
+			
+			//如果authorArray[hashcode]里面有数据，但是是同个作者，就给作者的篇数+1。
+			else if(AllStatic.authorArray[index].getName().equals(str)) {
+				AllStatic.authorArray[index].plus();
+				//System.out.println("同个作者"+str);
+				return true;
+			}
+			
+			//如果发生冲突，用线性探测的方式重新寻址。
+			else {
+				conflict++;
+				//System.out.println("发生冲突，重新计算");
+				return recordAuthor(str, conflict);
+			}
+		}
+		
+		
 //	设置高精度作者索引文件每页的内容
 	public String setPageContent(int index) {
 		StringBuilder sb = new StringBuilder();
@@ -197,6 +234,41 @@ public class AuthorIndexUtil {
 				}
 	}
 	
+	//将100个文章最多的作者数据写入文件中
+	public static void setFileCount(AuthorCount[] aTry) {
+		try {
+			File dir = new File("d:/DBhomework");
+//			如果文件夹不存在就创建
+			if(!dir.exists()) {
+				dir.mkdir();
+			}
+			File authorFile = new File(dir,"authorCount.txt");
+//			文件不存在就创建新文件
+			if(!authorFile.exists())
+					authorFile.createNewFile();
+			
+//			创建文件输出流对象
+			outCount = new FileOutputStream(authorFile);
+			boutCount = new BufferedOutputStream(outCount, 5242880);
+			
+			String str = null;
+			for(int i=0; i<aTry.length; i++){
+					str = aTry[i].getName()+"|"+aTry[i].getCount()+"\r\n";
+					boutCount.write(str.getBytes());
+				}
+		}catch (IOException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			try {
+				boutCount.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
 	public static List<ArticleInfo> getArticleByFile(String author, RandomAccessFile rafAuthor1, RandomAccessFile rafSrc1,
 			RandomAccessFile rafAuthor2,RandomAccessFile rafSrc2) {
 		int pos = getAuthorPos(author, AllStatic.authorPos.length);

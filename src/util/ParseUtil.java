@@ -26,9 +26,12 @@ import org.xml.sax.helpers.DefaultHandler;
 import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry.Entry;
 
 import entity.ArticleInfo;
+import entity.AuthorCount;
 
 public class ParseUtil{
 	public static List<ArticleInfo>list;
+	
+	
 	
 	public static List<ArticleInfo> myParse(String pathName) throws ParserConfigurationException, SAXException, IOException {
 SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -61,6 +64,8 @@ class ArticleHandler extends DefaultHandler{
 		private static int articlePos1=0;
 //		记录article块在源文件2中的位置
 		private static int articlePos2=0;
+		
+		
 		
 		private static String title = new String();
 
@@ -190,6 +195,7 @@ class ArticleHandler extends DefaultHandler{
 			}
 		}
 		tag = null;
+
 		if("inproceedings".equals(qName) || "article".equals(qName)) {
 			System.out.println("作者个数为"+authorCount);
 			flag = 0;
@@ -226,6 +232,11 @@ class ArticleHandler extends DefaultHandler{
 //				}
 				articlePos1++;
 				for(String author : authorList) {
+					
+					//用哈希建立索引
+					AuthorIndexUtil.recordAuthor(author, 0);
+
+					
 					if(!AuthorIndexUtil.assignValue(author,articlePos1)) {
 						boolean b = AuthorIndexUtil.assignValue2(author, articlePos1);
 						if(b == false)
@@ -266,6 +277,8 @@ class ArticleHandler extends DefaultHandler{
 //				}
 				articlePos2++;
 				for(String author : authorList) {
+					AuthorIndexUtil.recordAuthor(author, 0);
+
 					if(!AuthorIndexUtil.assignValue(author,articlePos2+10000000)) {
 						AuthorIndexUtil.assignValue2(author, articlePos2+10000000);			
 					}
@@ -300,6 +313,13 @@ class ArticleHandler extends DefaultHandler{
 //			}
 //		}
 		System.out.println("解析完成---------------------------------");
+		
+		//将所有数据从哈希表中取出，通过维护一个100数据大小的最小堆，得到最大的100个数据
+		AuthorCount[] aTry = AuthorCountUtil.topK(AllStatic.authorArray, 100);
+		
+		//将一百个数据写进txt文件
+		AuthorIndexUtil.setFileCount(aTry);
+		
 //		for(String s : list)
 //			System.out.println("泄露作者名为"+s);
 	}
