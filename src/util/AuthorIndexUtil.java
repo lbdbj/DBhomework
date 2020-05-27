@@ -16,12 +16,14 @@ import org.xml.sax.SAXException;
 import entity.ArticleInfo;
 import entity.Judege;
 
+
 //建立文章作者索引文件的工具类
 public class AuthorIndexUtil {
 	public static AuthorIndexUtil instance = new AuthorIndexUtil();
 	
 	public FileOutputStream out = null;
 	public BufferedOutputStream bout = null;
+
 			
 //		获取字符串哈希值的方法,此时获取的哈希值就可以作为存放在数组的位置（也就是作者名的哈希值）
 		public static int getAuthorPos(String str, int len) {
@@ -42,6 +44,7 @@ public class AuthorIndexUtil {
 				hashcode = -hashcode;
 			return hashcode;
 		}
+
 //		用来建立作者索引文件时向内存中的哈希表赋值
 		public static void assignValue(String str, int len, int pos) {
 //			获取给定作者字符串的哈希值当做哈希表中的一个键
@@ -50,6 +53,7 @@ public class AuthorIndexUtil {
 			if(AllStatic.map.containsKey(hashcode))
 //				向这个键对应的值中添加这个哈希值
 				AllStatic.map.get(hashcode).add(pos);
+
 			else {
 //				否则新建一个键值对
 				List<Integer>list = new ArrayList<Integer>();
@@ -58,7 +62,9 @@ public class AuthorIndexUtil {
 			}
 			
 		}
+
 //	根据给定的作者名从srcfile中获取所有包含这个作者的文章信息
+
 	public static List<ArticleInfo> getArticleByFile(String author, RandomAccessFile rafAuthor1, RandomAccessFile rafSrc1,
 			RandomAccessFile rafAuthor2,RandomAccessFile rafSrc2) {
 		List<ArticleInfo>list = new ArrayList<ArticleInfo>();

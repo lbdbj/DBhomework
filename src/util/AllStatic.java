@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import entity.AuthorCount;
 
 public class AllStatic {
 //	建立索引文件时暂存信息的哈希表
@@ -20,4 +21,6 @@ public class AllStatic {
 	//authorindex2文件一共有8192页每页最多存2000个数据
 	public static int authorPos2[][] = new int[8192][2000];
 	public static int a = 0;
+	public static AuthorCount authorArray[] = new AuthorCount[15464693];
+	
 }
