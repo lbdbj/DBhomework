@@ -30,7 +30,9 @@ import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry.Entry;
 
 import entity.ArticleInfo;
 import entity.AuthorCount;
+
 import entity.AnalysisClass.YearList;
+
 
 public class ParseUtil{
 	public static List<ArticleInfo>list;
@@ -333,8 +335,9 @@ class ArticleHandler extends DefaultHandler{
 //				向部分匹配搜索的关键词哈希表赋值
 				PartSearchUtil.assignValue(subTitles, 2097152, articlePos2+10000000);
 				}
-			}
 
+
+			}
 
 			sb.setLength(0);
 			authorList = null;  
