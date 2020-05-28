@@ -29,7 +29,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry.Entry;
 
 import entity.ArticleInfo;
-
+import entity.AuthorCount;
 import util.AnalysisClass.YearList;
 
 public class ParseUtil{
@@ -302,16 +302,13 @@ class ArticleHandler extends DefaultHandler{
 				TitleIndexUtil.assignValue(title, 8388608, articlePos2+10000000);
 //				向作者哈希表中赋值
 				for(String author : authorList) {
-
+					AuthorCountUtil.recordAuthor(author, 0);
 					AuthorIndexUtil.assignValue(author, 4194304, articlePos2+10000000);
 			}
 //				切分标题
 				subTitles = PartSearchUtil.subTitle(title);
 //				向部分匹配搜索的关键词哈希表赋值
 				PartSearchUtil.assignValue(subTitles, 2097152, articlePos2+10000000);
-
-					AuthorCountUtil.recordAuthor(author, 0);
-
 
 			}
 
