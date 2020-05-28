@@ -31,12 +31,12 @@ public class MainPanel extends JPanel {
 //	设置主面板的构造函数
 	private MainPanel() {
 //		设置按钮的各种属性
-		GUIUtil.setImageIcon(bBasicSearch, "home.png", "基本搜索");
-		GUIUtil.setImageIcon(bRelSearch, "record.png", "相关搜索");
-		GUIUtil.setImageIcon(bStatistics, "category2.png", "作者统计");
-		GUIUtil.setImageIcon(bImportFile, "report.png", "导入文件");
-		GUIUtil.setImageIcon(bAnalysis, "config.png", "热点分析");
-		GUIUtil.setImageIcon(bPartSearch, "backup.png", "部分匹配搜索");
+		GUIUtil.setImageIcon(bBasicSearch, "基本搜索");
+		GUIUtil.setImageIcon(bRelSearch, "相关搜索");
+		GUIUtil.setImageIcon(bStatistics, "作者统计");
+		GUIUtil.setImageIcon(bImportFile, "导入文件");
+		GUIUtil.setImageIcon(bAnalysis, "热点分析");
+		GUIUtil.setImageIcon(bPartSearch, "部分匹配搜索");
 		
 //		将按钮添加到工具栏中
 		tb.add(bBasicSearch);

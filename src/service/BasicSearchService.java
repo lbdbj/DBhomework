@@ -38,6 +38,7 @@ public class BasicSearchService {
 			JOptionPane.showMessageDialog(null, "没有查询到文章信息，请修改后重新查询", "INFORMATION_MESSAGE",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
+		System.out.println("文章数量"+articles.size());
 		return articles;
 		
 	}

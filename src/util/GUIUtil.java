@@ -13,11 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class GUIUtil {
-	private static String imageFolder = "D:/hutubill_image/img";
 //	用来绘制选项侧边栏
-	public static void setImageIcon(JButton b, String fileName, String tip) {
-        ImageIcon i = new ImageIcon(new File(imageFolder, fileName).getAbsolutePath());
-        b.setIcon(i);
+	public static void setImageIcon(JButton b, String tip) {
         //设置按钮的图标，默认居中
         b.setPreferredSize(new Dimension(100, 100));
         b.setToolTipText(tip);

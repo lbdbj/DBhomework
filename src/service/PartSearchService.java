@@ -79,6 +79,7 @@ public class PartSearchService {
 			JOptionPane.showMessageDialog(instance, "没有查询到文章信息，请修改后重新查询", "INFORMATION_MESSAGE",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
+		System.out.println("文章数量"+articles.size());
 		return articles;
 	}
 	public static void main(String[] args) throws IOException {

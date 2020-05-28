@@ -48,10 +48,13 @@ public class ImportFilePanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				pathName = filePath.getText().toString();
-				if(pathName.equals(""))
+				if(pathName.equals("")) {
 					JOptionPane.showMessageDialog(ImportFilePanel.instance, "请选择文件");
+					return;
+				}
 				else if(!pathName.endsWith(".xml")) {
 					JOptionPane.showMessageDialog(ImportFilePanel.instance, "只接收xml文件");
+					return;
 				}
 				else {
 					try {
