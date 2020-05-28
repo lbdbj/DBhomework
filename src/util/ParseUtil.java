@@ -30,7 +30,7 @@ import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry.Entry;
 
 import entity.ArticleInfo;
 import entity.AuthorCount;
-import util.AnalysisClass.YearList;
+import entity.AnalysisClass.YearList;
 
 public class ParseUtil{
 	public static List<ArticleInfo>list;
@@ -259,7 +259,6 @@ class ArticleHandler extends DefaultHandler{
 				for(String author : authorList) {
 						AuthorIndexUtil.assignValue(author, 4194304, articlePos1);
 
-					
 					//用哈希建立索引
 					AuthorCountUtil.recordAuthor(author, 0);
 
@@ -302,8 +301,8 @@ class ArticleHandler extends DefaultHandler{
 				TitleIndexUtil.assignValue(title, 8388608, articlePos2+10000000);
 //				向作者哈希表中赋值
 				for(String author : authorList) {
-					AuthorCountUtil.recordAuthor(author, 0);
 					AuthorIndexUtil.assignValue(author, 4194304, articlePos2+10000000);
+					AuthorCountUtil.recordAuthor(author, 0);
 			}
 //				切分标题
 				subTitles = PartSearchUtil.subTitle(title);
