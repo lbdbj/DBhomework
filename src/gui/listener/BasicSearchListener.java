@@ -17,6 +17,8 @@ public class BasicSearchListener implements ActionListener {
 	public List<ArticleInfo>list = new ArrayList<ArticleInfo>();
 	@Override
 	public void actionPerformed(ActionEvent e) {
+//		获取程序开始的时间
+		long startTime =  System.currentTimeMillis();
 //		获得基本搜索界面的实例
 		BasicSearchPanel instance = BasicSearchPanel.instance;
 //		获取下拉框
@@ -49,5 +51,10 @@ public class BasicSearchListener implements ActionListener {
 			}
 			instance.t.updateUI();
 		}
+//		获取程序结束的时间
+		long endTime =  System.currentTimeMillis();
+//		获取搜索所用时间
+		long usedTime = (endTime-startTime);
+		System.out.println("搜索用时为"+usedTime+"毫秒");
 	}
 }

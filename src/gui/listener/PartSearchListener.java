@@ -14,6 +14,8 @@ public class PartSearchListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+//		获取程序开始的时间
+		long startTime =  System.currentTimeMillis();
 //		获取部分匹配搜索界面的实例
 		PartSearchPanel instance = PartSearchPanel.instance;
 //		获取文本输入框输入的内容
@@ -32,6 +34,11 @@ public class PartSearchListener implements ActionListener {
 			e1.printStackTrace();
 		}
 		instance.t.updateUI();
+//		获取程序结束的时间
+		long endTime =  System.currentTimeMillis();
+//		获取搜索所用时间
+		long usedTime = (endTime-startTime);
+		System.out.println("搜索用时为"+usedTime+"毫秒");
 	}
 
 }
