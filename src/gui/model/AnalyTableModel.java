@@ -12,8 +12,6 @@ public class AnalyTableModel implements TableModel {
 	public List<String> as = new ArrayList<String>();
 	public AnalyTableModel() {
 		// TODO Auto-generated constructor stub
-//		as.add("ÁõÊÀÎ°");
-//		as.add("·ëÕ×Åô");
 	} 
 	@Override
 	public int getRowCount() {

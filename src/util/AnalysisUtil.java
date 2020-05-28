@@ -36,7 +36,7 @@ public class AnalysisUtil {
 	public static int LENGTH = 300;
 	/**用于记录热词数量的类
 	 * YearList contains Year, [Year]->WordList
-	 * WordList contains Wore, [Word]->{word,sum}
+	 * WordList contains Word, [Word]->{word,sum}
 	 */
 	public static YearList yearlist = new AnalysisClass().getYearList();
 

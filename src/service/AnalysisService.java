@@ -39,5 +39,4 @@ public class AnalysisService {
 		return AnalysisUtil.getWordsOfPos(pos, AnalysisUtil.LENGTH, raf);
 	}
 	
-	
 }
