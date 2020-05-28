@@ -25,7 +25,7 @@ public class RelSearchListener implements ActionListener {
             List<String> lists = new ArrayList<String>();
             new RelSearchService().getAllInfoByAuthor(input).stream().forEach(
             item -> {
-                String[] strings = item.getAuthors().split("\\r");
+                String[] strings = item.getAuthors().split("\\r?\\n");
                   for (String temp : strings) {
                     if (input.equals(temp)) continue;
                     lists.add(temp);

@@ -9,13 +9,6 @@ import javax.swing.table.TableModel;
 public class RelTableModel implements TableModel {
 	String columnNames[] = new String[] {"合作作者名"};
 	public List<String> rs = new ArrayList<String>();
-	public RelTableModel() {
-		// TODO Auto-generated constructor stub
-		rs.add("刘世伟");
-		rs.add("冯兆鹏");
-		rs.add("刘付磊");
-		rs.add("张培浩");
-	} 
 	@Override
 	public int getRowCount() {
 		// TODO Auto-generated method stub

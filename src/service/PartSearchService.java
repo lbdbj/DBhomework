@@ -36,7 +36,7 @@ public class PartSearchService {
 //		存储包含给定关键词的文章位置
 		int allPos[] = null;	
 //		如果输入关键词不符合要求给出提示
-		if(keywords.length == 0) {
+		if(keywords.length != keywordsStr.split("\\s+").length) {
 			JOptionPane.showMessageDialog(instance, "您输入的关键词格式不对，请不要输入冠词，介词等无意义的单词", "INFORMATION_MESSAGE",
 					JOptionPane.INFORMATION_MESSAGE);
 			return articles;

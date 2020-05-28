@@ -13,7 +13,7 @@ import util.TitleIndexUtil;
 public class RelSearchService {
 
     public List<ArticleInfo> getAllInfoByAuthor(String author) throws IOException {
-        File file1 = new File("D:\\DBhomework\\authorindex.txt");
+        File file1 = new File("D:\\DBhomework\\authorindex1.txt");
         File file2 = new File("D:\\DBhomework\\srcfile1.txt");
         File file3 = new File("D:\\DBhomework\\authorindex2.txt");
         File file4 = new File("D:\\DBhomework\\srcfile2.txt");
