@@ -97,7 +97,7 @@ class ArticleHandler extends DefaultHandler{
 //	开始解析xml文件
 	public void startDocument() throws SAXException {
 		super.startDocument();
-		System.out.println("开始解析---");
+//		System.out.println("开始解析---");
 		if(AllStatic.setFileFlag == 1) {
 		try {
 			File dir = new File("d:/DBhomework");
@@ -273,10 +273,6 @@ class ArticleHandler extends DefaultHandler{
 				if(AllStatic.setFileFlag==3) {
 				for(String author : authorList) {
 						AuthorIndexUtil.assignValue(author, 4194304, articlePos1);
-						if(AllStatic.setFileFlag==6) {
-					//用哈希建立索引
-					AuthorCountUtil.recordAuthor(author, 0);
-						}
 					}
 				}
 				if(AllStatic.setFileFlag==4) {
@@ -285,6 +281,12 @@ class ArticleHandler extends DefaultHandler{
 //				向部分匹配搜索的关键词哈希表赋值
 				PartSearchUtil.assignValue(subTitles, 2097152, articlePos1);
 				}
+				for(String author : authorList) {
+					if(AllStatic.setFileFlag==6) {
+						//用哈希建立索引
+						AuthorCountUtil.recordAuthor(author, 0);
+							}
+					}
 			}else {
 ////				向srcfile2写入文章信息
 				if(AllStatic.setFileFlag==1) {
@@ -324,10 +326,7 @@ class ArticleHandler extends DefaultHandler{
 //				向作者哈希表中赋值
 				if(AllStatic.setFileFlag==3) {
 				for(String author : authorList) {
-					if(AllStatic.setFileFlag==6) {
-						//用哈希建立索引
-						AuthorCountUtil.recordAuthor(author, 0);
-							}
+					
 					AuthorIndexUtil.assignValue(author, 4194304, articlePos2+10000000);
 					}
 				}
@@ -337,7 +336,12 @@ class ArticleHandler extends DefaultHandler{
 //				向部分匹配搜索的关键词哈希表赋值
 				PartSearchUtil.assignValue(subTitles, 2097152, articlePos2+10000000);
 				}
-
+				for(String author : authorList) {
+				if(AllStatic.setFileFlag==6) {
+					//用哈希建立索引
+					AuthorCountUtil.recordAuthor(author, 0);
+						}
+				}
 
 			}
 
@@ -369,20 +373,18 @@ class ArticleHandler extends DefaultHandler{
 			}
 		}
 	}
-		System.out.println("解析完成---"+"大文章"+articlePos2+"小文章"+articlePos1);
-		System.out.println("解析完成---------------------------------");
-
-////		创建热词分析的索引文件
-//		AnalysisUtil.setFile();
-//		
-//
-//		
-//		//将所有数据从哈希表中取出，通过维护一个100数据大小的最小堆，得到最大的100个数据
-//		AuthorCount[] aTry = AuthorCountUtil.topK(AllStatic.authorArray, 100);
-//		
-//		//将一百个数据写进txt文件
-//		AuthorCountUtil.setFileCount(aTry);
+//		System.out.println("解析完成---------------------------------");
+		if(AllStatic.setFileFlag == 5) {
+			//		创建热词分析的索引文件
+			AnalysisUtil.setFile();
+		}
+		if(AllStatic.setFileFlag == 6) {
+		//将所有数据从哈希表中取出，通过维护一个100数据大小的最小堆，得到最大的100个数据
+		AuthorCount[] aTry = AuthorCountUtil.topK(AllStatic.authorArray, 100);
 		
+		//将一百个数据写进txt文件
+		AuthorCountUtil.setFileCount(aTry);
+		}
 
 	}
 }

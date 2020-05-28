@@ -81,7 +81,6 @@ public class IndexFileUtil {
 					bout1.write(str.getBytes());
 				}
 			}
-			System.out.println("文件1建立完毕");
 		}catch (IOException e) {
 			e.printStackTrace();
 		}finally {
@@ -124,7 +123,6 @@ public class IndexFileUtil {
 					pos += AllStatic.map.get(i).size();
 				}
 			}
-			System.out.println("文件2建立完毕");
 		}catch (IOException e) {
 			// TODO: handle exception
 			e.printStackTrace();

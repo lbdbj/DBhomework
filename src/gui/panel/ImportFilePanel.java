@@ -77,6 +77,13 @@ public class ImportFilePanel extends JPanel {
 						instance.setFile1(2097152,"partindex1.txt");
 						instance.setFile2(2097152,"partindex2.txt");
 						AllStatic.map.clear();
+						
+						AllStatic.setFileFlag = 5;
+						ParseUtil.myParse(pathName);
+						
+						AllStatic.setFileFlag = 6;
+						ParseUtil.myParse(pathName);
+						
 						JOptionPane.showMessageDialog(ImportFilePanel.instance, "文件建立完成");
 						
 					} catch (ParserConfigurationException | SAXException | IOException e1) {

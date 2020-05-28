@@ -38,7 +38,6 @@ public class BasicSearchService {
 			JOptionPane.showMessageDialog(null, "没有查询到文章信息，请修改后重新查询", "INFORMATION_MESSAGE",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
-		System.out.println("文章数量"+articles.size());
 		return articles;
 		
 	}
@@ -68,9 +67,5 @@ public class BasicSearchService {
 
 	public static void main(String[] args) throws IOException {
 		List<ArticleInfo> list = new BasicSearchService().getAllInfoByAuthor("H. Vincent Poor");
-		int i=0;
-		for(ArticleInfo a : list)
-			i++;
-		System.out.println(i);
 	}
 }

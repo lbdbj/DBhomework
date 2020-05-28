@@ -38,7 +38,7 @@ public class PartSearchListener implements ActionListener {
 		long endTime =  System.currentTimeMillis();
 //		获取搜索所用时间
 		long usedTime = (endTime-startTime);
-		System.out.println("搜索用时为"+usedTime+"毫秒");
+//		System.out.println("搜索用时为"+usedTime+"毫秒");
 	}
 
 }
