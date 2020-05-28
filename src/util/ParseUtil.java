@@ -55,7 +55,9 @@ public class ParseUtil{
 		
 	}
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
-}
+//		AllStatic.setFileFlag = 1;
+//		ParseUtil.myParse("D:\\DBhomework\\dblp.xml");
+	}
 }
 class ArticleHandler extends DefaultHandler{
 		private List<String>authorList;
