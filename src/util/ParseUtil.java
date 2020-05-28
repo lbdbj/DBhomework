@@ -53,7 +53,6 @@ public class ParseUtil{
 		
 	}
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
-		ParseUtil.myParse("D:\\DBhomework\\dblp.xml");
 }
 }
 class ArticleHandler extends DefaultHandler{
@@ -61,12 +60,12 @@ class ArticleHandler extends DefaultHandler{
 		private StringBuilder sb = new StringBuilder();
 		private StringBuilder contentBuilder = new StringBuilder();
 //		用于判断一个article块是否结束
-		private static int flag = 0;
+		private int flag = 0;
 		private String tag;
 //		记录article块在srcfile1中的位置
-		private static int articlePos1=0;
+		private int articlePos1=0;
 //		记录article块在srcfile2中的位置
-		private static int articlePos2=0;
+		private int articlePos2=0;
 
 //		记录文章标题
 
@@ -81,10 +80,12 @@ class ArticleHandler extends DefaultHandler{
 		//计数器
 //		private static int count = 0;
 
-//		private static FileOutputStream out1 = null;
-//		private static FileOutputStream out2 = null;
-//		private static BufferedOutputStream bOut1 = null;
-//		private static BufferedOutputStream bOut2 = null;
+		private FileOutputStream out1 = null;
+		private FileOutputStream out2 = null;
+		private BufferedOutputStream bOut1 = null;
+		private BufferedOutputStream bOut2 = null;
+		
+		private String str = null;
 //		记录切割标题后的关键词
 		private String[] subTitles = null;
 		
@@ -93,35 +94,37 @@ class ArticleHandler extends DefaultHandler{
 	public void startDocument() throws SAXException {
 		super.startDocument();
 		System.out.println("开始解析---");
-//		try {
-//			File dir = new File("d:/DBhomework");
-////			如果文件夹不存在就创建
-//			if(!dir.exists()) {
-//				dir.mkdir();
-//			}
-//			File titleFile = new File(dir,"srcfile1.txt");
-////			文件不存在就创建新文件
-//			if(!titleFile.exists())
-//					titleFile.createNewFile();
-//			File dir2 = new File("d:/DBhomework");
-////			如果文件夹不存在就创建
-//			if(!dir2.exists()) {
-//				dir2.mkdir();
-//			}
-//			File titleFile2 = new File(dir,"srcfile2.txt");
-////			文件不存在就创建新文件
-//			if(!titleFile2.exists())
-//					titleFile2.createNewFile();
-//			out1 = new FileOutputStream("d:/DBhomework/srcfile1.txt");
-//			out2 = new FileOutputStream("d:/DBhomework/srcfile2.txt");
+		if(AllStatic.setFileFlag == 1) {
+		try {
+			File dir = new File("d:/DBhomework");
+//			如果文件夹不存在就创建
+			if(!dir.exists()) {
+				dir.mkdir();
+			}
+			File srcFile = new File(dir,"srcfile1.txt");
+//			文件不存在就创建新文件
+			if(!srcFile.exists())
+					srcFile.createNewFile();
+			File dir2 = new File("d:/DBhomework");
+//			如果文件夹不存在就创建
+			if(!dir2.exists()) {
+				dir2.mkdir();
+			}
+			File titleFile2 = new File(dir,"srcfile2.txt");
+//			文件不存在就创建新文件
+			if(!titleFile2.exists())
+					titleFile2.createNewFile();
+			out1 = new FileOutputStream("d:/DBhomework/srcfile1.txt");
+			out2 = new FileOutputStream("d:/DBhomework/srcfile2.txt");
 //		                           创建缓冲流对象
-//			bOut1 = new BufferedOutputStream(out1,10000000);
-//			bOut2 = new BufferedOutputStream(out2,5000000);
-//			
-//		} catch (IOException e) {
-//			// TODO: handle exception
-//			e.printStackTrace();
-//		}
+			bOut1 = new BufferedOutputStream(out1,10000000);
+			bOut2 = new BufferedOutputStream(out2,5000000);
+			
+		} catch (IOException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		}
 	}
 	
 	@Override
@@ -203,10 +206,10 @@ class ArticleHandler extends DefaultHandler{
 		tag = null;
 
 		if("inproceedings".equals(qName) || "article".equals(qName)) {
-//			解析一篇文章结束令flag为0
 
 //------------------------------------------------------------------------------------------------
 //			向热词年份表插入数据
+			if(AllStatic.setFileFlag==5) {
 //			获取索引
 			indexYear=AnalysisUtil.yearlist.getIndexOf(year);
 //			插入新年份
@@ -215,100 +218,121 @@ class ArticleHandler extends DefaultHandler{
 			}
 			
 			AnalysisUtil.yearlist.addWords(indexYear, title);
+		}
 //------------------------------------------------------------------------------------------------
 //			System.out.println("count:"+(++count));
 			
 //			System.out.println("作者个数为"+authorCount);
+//			解析一篇文章结束令flag为0
 			flag = 0;
+			
 			int len = sb.length();
 //			如果文章中包含的字节数小于500
 			if(len<=500) {
-////				向srcfile1写入文章信息
-//				str = SrcFileUtil.formatStr(sb,500);
-//				try {
-//					byte[] bs = str.getBytes();
-//					int lenb = bs.length;
-//					if(lenb > 500) {
-//						byte bs2[] = new byte[500];
-//						for(int i=0; i<500; i++)
-//							bs2[i] = bs[i];
-//						bOut1.write(bs2);
-//					}else if (lenb<500) {
-//						byte bs2[] = new byte[500];
-//						for(int i=0;i<500;i++) {
-//							if(i<lenb)
-//								bs2[i] = bs[i];
-//							else {
-//								bs2[i] =' ';
-//							}
-//						}
-//						bOut1.write(bs2);
-//					}
-//					else {
-//						bOut1.write(bs);
-//					}
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
+				if(AllStatic.setFileFlag==1) {
+//				向srcfile1写入文章信息
+				str = SrcFileUtil.formatStr(sb,500);
+				try {
+					byte[] bs = str.getBytes();
+					int lenb = bs.length;
+					if(lenb > 500) {
+						byte bs2[] = new byte[500];
+						for(int i=0; i<500; i++)
+							bs2[i] = bs[i];
+						bOut1.write(bs2);
+					}else if (lenb<500) {
+						byte bs2[] = new byte[500];
+						for(int i=0;i<500;i++) {
+							if(i<lenb)
+								bs2[i] = bs[i];
+							else {
+								bs2[i] =' ';
+							}
+						}
+						bOut1.write(bs2);
+					}
+					else {
+						bOut1.write(bs);
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				}
 //				文章地址自增
 				articlePos1++;
 //				向标题哈希表中赋值
-				TitleIndexUtil.assignValue(title, 8388608, articlePos1);
+				if(AllStatic.setFileFlag==2) {
+					TitleIndexUtil.assignValue(title, 8388608, articlePos1);
+				}
 //				向作者哈希表中赋值
+				if(AllStatic.setFileFlag==3) {
 				for(String author : authorList) {
 						AuthorIndexUtil.assignValue(author, 4194304, articlePos1);
-
+						if(AllStatic.setFileFlag==6) {
 					//用哈希建立索引
 					AuthorCountUtil.recordAuthor(author, 0);
-
+						}
+					}
 				}
+				if(AllStatic.setFileFlag==4) {
 //				切分标题
 				subTitles = PartSearchUtil.subTitle(title);
 //				向部分匹配搜索的关键词哈希表赋值
 				PartSearchUtil.assignValue(subTitles, 2097152, articlePos1);
+				}
 			}else {
 ////				向srcfile2写入文章信息
-//				str = SrcFileUtil.formatStr(sb,5000);
-//				try {
-//					byte[] bs = str.getBytes();
-//					int lenb = bs.length;
-//					if(lenb > 5000) {
-//						byte bs2[] = new byte[5000];
-//						for(int i=0; i<5000; i++)
-//							bs2[i] = bs[i];
-//						bOut2.write(bs2);
-//					}else if (lenb<5000) {
-//						byte bs2[] = new byte[5000];
-//						for(int i=0;i<5000;i++) {
-//							if(i<lenb)
-//								bs2[i] = bs[i];
-//							else {
-//								bs2[i] =' ';
-//							}
-//						}
-//						bOut2.write(bs2);
-//					}
-//					else {
-//						bOut2.write(bs);
-//					}
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
+				if(AllStatic.setFileFlag==1) {
+				str = SrcFileUtil.formatStr(sb,5000);
+				try {
+					byte[] bs = str.getBytes();
+					int lenb = bs.length;
+					if(lenb > 5000) {
+						byte bs2[] = new byte[5000];
+						for(int i=0; i<5000; i++)
+							bs2[i] = bs[i];
+						bOut2.write(bs2);
+					}else if (lenb<5000) {
+						byte bs2[] = new byte[5000];
+						for(int i=0;i<5000;i++) {
+							if(i<lenb)
+								bs2[i] = bs[i];
+							else {
+								bs2[i] =' ';
+							}
+						}
+						bOut2.write(bs2);
+					}
+					else {
+						bOut2.write(bs);
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+			}
+				}
 				articlePos2++;
 //				向标题哈希表中赋值
-				TitleIndexUtil.assignValue(title, 8388608, articlePos2+10000000);
+				if(AllStatic.setFileFlag==2) {
+					TitleIndexUtil.assignValue(title, 8388608, articlePos2+10000000);
+				}
 //				向作者哈希表中赋值
+				if(AllStatic.setFileFlag==3) {
 				for(String author : authorList) {
+					if(AllStatic.setFileFlag==6) {
+						//用哈希建立索引
+						AuthorCountUtil.recordAuthor(author, 0);
+							}
 					AuthorIndexUtil.assignValue(author, 4194304, articlePos2+10000000);
-					AuthorCountUtil.recordAuthor(author, 0);
-			}
+					}
+				}
 //				切分标题
+				if(AllStatic.setFileFlag==4) {
 				subTitles = PartSearchUtil.subTitle(title);
 //				向部分匹配搜索的关键词哈希表赋值
 				PartSearchUtil.assignValue(subTitles, 2097152, articlePos2+10000000);
-
+				}
 			}
 
 
@@ -322,34 +346,37 @@ class ArticleHandler extends DefaultHandler{
 	@Override
 	public void endDocument() throws SAXException {
 		super.endDocument();
-////		刷新缓存流将缓存中的数据输出到文件
-//		try {
-//			bOut1.flush();
-//			bOut2.flush();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}finally {
-//			try {
-//				bOut1.close();
-//				bOut2.close();
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
+		if(AllStatic.setFileFlag==1) {
+//		刷新缓存流将缓存中的数据输出到文件
+		try {
+			bOut1.flush();
+			bOut2.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			try {
+				bOut1.close();
+				bOut2.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 		System.out.println("解析完成---"+"大文章"+articlePos2+"小文章"+articlePos1);
 		System.out.println("解析完成---------------------------------");
 
-//		创建热词分析的索引文件
-		AnalysisUtil.setFile();
-
-		
-		//将所有数据从哈希表中取出，通过维护一个100数据大小的最小堆，得到最大的100个数据
-		AuthorCount[] aTry = AuthorCountUtil.topK(AllStatic.authorArray, 100);
-		
-		//将一百个数据写进txt文件
-		AuthorCountUtil.setFileCount(aTry);
+////		创建热词分析的索引文件
+//		AnalysisUtil.setFile();
+//		
+//
+//		
+//		//将所有数据从哈希表中取出，通过维护一个100数据大小的最小堆，得到最大的100个数据
+//		AuthorCount[] aTry = AuthorCountUtil.topK(AllStatic.authorArray, 100);
+//		
+//		//将一百个数据写进txt文件
+//		AuthorCountUtil.setFileCount(aTry);
 		
 
 	}
