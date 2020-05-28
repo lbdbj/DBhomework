@@ -49,11 +49,11 @@ public class AnalyTableModel implements TableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		// TODO Auto-generated method stub
 		if(0 == columnIndex) {
-			System.out.println("colunmn="+columnIndex+" row="+rowIndex);
+//			System.out.println("colunmn="+columnIndex+" row="+rowIndex);
 			return as.get(2*rowIndex);
 		}
 		if(1 == columnIndex) {
-			System.out.println("colunmn="+columnIndex+" row="+rowIndex);
+//			System.out.println("colunmn="+columnIndex+" row="+rowIndex);
 			return as.get(2*rowIndex+1);
 		}
 			

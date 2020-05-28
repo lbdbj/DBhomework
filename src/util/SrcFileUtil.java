@@ -156,6 +156,7 @@ public class SrcFileUtil {
 			if(flag == 0) {
 				return new Judege(false, new String(content));
 			}
+			flag = 0;
 		}
 //		关键词全部出现返回true和文章信息
 		return new Judege(true, new String(content));

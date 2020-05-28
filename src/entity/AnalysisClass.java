@@ -1,4 +1,4 @@
-package util;
+package entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -203,7 +203,7 @@ public class AnalysisClass {
 	}
 	
 	//纪年类
-	class Year{
+	public class Year{
 		//年份
 		public short year;
 		//单词列表
@@ -216,7 +216,7 @@ public class AnalysisClass {
 	}
 	
 	//纪年列表的包装类
-	class YearList{
+	public class YearList{
 		//变量
 		public List<Year> list;
 		public int size;
@@ -278,16 +278,18 @@ public class AnalysisClass {
 		}
 		
 
-		/**向YearList中对应位置的Year添加新词
+		/**向YearList中对应位置的Year添加标题
 		 * @param index -年份的索引
 		 * @param words -新词的数组
 		 */
-		public void addWords(int index, String[] words) {
+		public void addWords(int index, String title) {
 //			bad method: 人工筛查单词
 			String uselessWords = "of for and a in the on with using to an based from by via towards through as over is "+
 					 "under at is two how into their it or during are can that use them but";
 			String pluralWords = "System Computer Network Algorithm Note";
 			
+//			分解标题,获取纯净的单词流
+			String[] words = title.replaceAll("[[^-]&&\\p{P}\\d]", "").replace(" - ","").split(" ");
 			Year temp = list.get(index);
 			for(String word:words) {
 //				过滤空字符以及没有实质含义的单词

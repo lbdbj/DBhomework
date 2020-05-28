@@ -35,10 +35,11 @@ public class PartSearchService {
 		RandomAccessFile raf4 = new RandomAccessFile(file4, "r");
 //		存储包含给定关键词的文章位置
 		int allPos[] = null;	
-//		如果没有输入信息给出提示
+//		如果输入关键词不符合要求给出提示
 		if(keywords.length == 0) {
-			JOptionPane.showMessageDialog(instance, "您输入的关键词格式不对", "INFORMATION_MESSAGE",
+			JOptionPane.showMessageDialog(instance, "您输入的关键词格式不对，请不要输入冠词，介词等无意义的单词", "INFORMATION_MESSAGE",
 					JOptionPane.INFORMATION_MESSAGE);
+			return articles;
 		}
 //		如果关键词只有一个，直接获得文章地址数组
 		else if (keywords.length == 1) {

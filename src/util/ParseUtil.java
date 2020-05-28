@@ -30,7 +30,9 @@ import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry.Entry;
 
 import entity.ArticleInfo;
 import entity.AuthorCount;
-import util.AnalysisClass.YearList;
+
+import entity.AnalysisClass.YearList;
+
 
 public class ParseUtil{
 	public static List<ArticleInfo>list;
@@ -209,14 +211,12 @@ class ArticleHandler extends DefaultHandler{
 //			向热词年份表插入数据
 //			获取索引
 			indexYear=AnalysisUtil.yearlist.getIndexOf(year);
-//			分解标题,获取纯净的单词流
-			words=title.replaceAll("[[^-]&&\\p{P}\\d]", "").replace(" - ","").split(" ");
 //			插入新年份
 			if(indexYear==-1) {
 				indexYear=AnalysisUtil.yearlist.addYear(year);
 			}
 			
-			AnalysisUtil.yearlist.addWords(indexYear, words);
+			AnalysisUtil.yearlist.addWords(indexYear, title);
 //------------------------------------------------------------------------------------------------
 //			System.out.println("count:"+(++count));
 			
@@ -261,7 +261,6 @@ class ArticleHandler extends DefaultHandler{
 				for(String author : authorList) {
 						AuthorIndexUtil.assignValue(author, 4194304, articlePos1);
 
-					
 					//用哈希建立索引
 					AuthorCountUtil.recordAuthor(author, 0);
 
@@ -304,7 +303,6 @@ class ArticleHandler extends DefaultHandler{
 				TitleIndexUtil.assignValue(title, 8388608, articlePos2+10000000);
 //				向作者哈希表中赋值
 				for(String author : authorList) {
-
 					AuthorIndexUtil.assignValue(author, 4194304, articlePos2+10000000);
 					AuthorCountUtil.recordAuthor(author, 0);
 			}
@@ -312,8 +310,6 @@ class ArticleHandler extends DefaultHandler{
 				subTitles = PartSearchUtil.subTitle(title);
 //				向部分匹配搜索的关键词哈希表赋值
 				PartSearchUtil.assignValue(subTitles, 2097152, articlePos2+10000000);
-
-					
 
 
 			}
