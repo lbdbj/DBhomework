@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -41,20 +42,23 @@ public class AnalysisPanel extends JPanel{
 	}
 	
 	private JPanel north(){
+		JPanel p = new JPanel();
 		try {
 			items = AnalysisService.getYearItems();
 			YearItem = new JComboBox<String>(items);
 		} catch (IOException e) {
 			// TODO 自动生成的 catch 块
+			JOptionPane.showMessageDialog(AnalysisPanel.instance, "索引文件缺失，请重新导入");
+			items = new String[0];
 			e.printStackTrace();
 		}
-		JPanel p = new JPanel();
-		p.add(new JLabel("选择年份："));
-		p.add(YearItem);
-		p.add(new JLabel("      "));
-		p.add(aSearch);
+		finally {
+			p.add(new JLabel("选择年份："));
+			p.add(YearItem);
+			p.add(new JLabel("      "));
+			p.add(aSearch);
+		}
 		return p;
-		
 	}
 	
 	private JScrollPane center() {
