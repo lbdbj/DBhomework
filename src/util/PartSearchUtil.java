@@ -78,6 +78,7 @@ public class PartSearchUtil {
 	public static void assignValue(String subTitles[],int len, int pos) {
 		for(String str : subTitles) {
 			if(str.length()!=0) {
+//				获取关键词的哈希值
 			int hashcode = IndexFileUtil.getPos(str, len);
 			if(AllStatic.map.containsKey(hashcode))
 				AllStatic.map.get(hashcode).add(pos);

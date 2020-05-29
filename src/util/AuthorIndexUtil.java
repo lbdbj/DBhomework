@@ -51,12 +51,13 @@ public class AuthorIndexUtil {
 			int hashcode = IndexFileUtil.getPos(str, len);
 //			如果哈希表中包含这个键
 			if(AllStatic.map.containsKey(hashcode))
-//				向这个键对应的值中添加这个哈希值
+//				向这个键对应的值中添加这个哈希值，更新这个键值对
 				AllStatic.map.get(hashcode).add(pos);
 
 			else {
 //				否则新建一个键值对
 				List<Integer>list = new ArrayList<Integer>();
+//				将这个文章地址添加到键值对中
 				list.add(pos);
 				AllStatic.map.put(hashcode, list);
 			}

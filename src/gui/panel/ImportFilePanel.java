@@ -59,31 +59,31 @@ public class ImportFilePanel extends JPanel {
 				else {
 					try {
 						JOptionPane.showMessageDialog(ImportFilePanel.instance, "建立文件可能需要几分钟，请耐心等待");
-						AllStatic.setFileFlag = 1;
-						ParseUtil.myParse(pathName);
-						AllStatic.setFileFlag = 2;
-						ParseUtil.myParse(pathName);
+//						AllStatic.setFileFlag = 1;
+//						ParseUtil.myParse(pathName);
+//						AllStatic.setFileFlag = 2;
+//						ParseUtil.myParse(pathName);
 						IndexFileUtil instance = new IndexFileUtil();
-						instance.setFile1(8388608, "titleIndex1.txt");
-						instance.setFile2(8388608, "titleIndex2.txt");
-						AllStatic.map.clear();
+//						instance.setFile1(8388608, "titleIndex1.txt");
+//						instance.setFile2(8388608, "titleIndex2.txt");
+//						AllStatic.map.clear();
 						AllStatic.setFileFlag = 3;
 						ParseUtil.myParse(pathName);
 						instance.setFile1(4194304, "authorIndex1.txt");
 						instance.setFile2(4194304, "authorIndex2.txt");
-						AllStatic.map.clear();
-						AllStatic.setFileFlag = 4;
-						ParseUtil.myParse(pathName);
-						instance.setFile1(2097152,"partindex1.txt");
-						instance.setFile2(2097152,"partindex2.txt");
-						AllStatic.map.clear();
-						
-						AllStatic.setFileFlag = 5;
-						ParseUtil.myParse(pathName);
-						
-						AllStatic.setFileFlag = 6;
-						ParseUtil.myParse(pathName);
-						
+//						AllStatic.map.clear();
+//						AllStatic.setFileFlag = 4;
+//						ParseUtil.myParse(pathName);
+//						instance.setFile1(2097152,"partindex1.txt");
+//						instance.setFile2(2097152,"partindex2.txt");
+//						AllStatic.map.clear();
+//						
+//						AllStatic.setFileFlag = 5;
+//						ParseUtil.myParse(pathName);
+//						
+//						AllStatic.setFileFlag = 6;
+//						ParseUtil.myParse(pathName);
+//						
 						JOptionPane.showMessageDialog(ImportFilePanel.instance, "文件建立完成");
 						
 					} catch (ParserConfigurationException | SAXException | IOException e1) {

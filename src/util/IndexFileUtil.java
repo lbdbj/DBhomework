@@ -12,7 +12,7 @@ public class IndexFileUtil {
 	private BufferedOutputStream bout2 = null;
 	private FileOutputStream out1 = null;
 	private FileOutputStream out2 = null;
-//	根据某个字符串获取hashcode,哈希表的大小为len
+//	根据某个字符串获取hashcode,哈希表的长度为len
 	public static int getPos(String str, int len) {
 //		将字符串转为字符数组
 		char[]vals = str.toCharArray();
